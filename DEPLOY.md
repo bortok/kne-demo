@@ -162,7 +162,6 @@ kubectl exec -it vm-2 -n 2node-host -- ip a
 
 5. Bring `eth1` on the first node down, and validate that on the second node `eth1` status changes to `<NO-CARRIER,BROADCAST,MULTICAST,UP,M-DOWN>`
 
-First node
 ```Shell
 kubectl exec -it vm-1 -n 2node-host -- ip link set eth1 down
 kubectl exec -it vm-2 -n 2node-host -- ip a
@@ -170,7 +169,6 @@ kubectl exec -it vm-2 -n 2node-host -- ip a
 
 6. Bring `eth1` on the first node up, and validate that on the second node `eth1` status changes to `<BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN>`
 
-First node
 ```Shell
 kubectl exec -it vm-1 -n 2node-host -- ip link set eth1 up
 kubectl exec -it vm-2 -n 2node-host -- ip a

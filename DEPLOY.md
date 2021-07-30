@@ -206,3 +206,9 @@ kops validate cluster $USER.k8s.local --wait 10m
 ```Shell
 kops export kubecfg $USER.k8s.local
 ````
+
+* To delete K8s cluster created by kOps, use
+
+```Shell
+kops delete cluster $USER.k8s.local --yes
+````

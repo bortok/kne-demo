@@ -137,7 +137,7 @@ kubectl get pods -n meshnet
 ````
 ## Validate KNE operations
 
-3. To validate KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
+1. To validate KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
 
 ```Shell
 ./kne_cli/kne_cli create ./examples/2node-host.pb.txt
@@ -145,35 +145,35 @@ kubectl get pods -n meshnet
 kubectl get pods -n 2node-host
 ````
 
-4. Check both PODs have two eth interfaces each, `eth0` and `eth1`. Note status of interface `eth1`, it should be `<BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN>`
+2. Check both PODs have two eth interfaces each, `eth0` and `eth1`. Note status of interface `eth1`, it should be `<BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN>`
 
 ```Shell
 kubectl exec -it vm-1 -n 2node-host -- ip a
 kubectl exec -it vm-2 -n 2node-host -- ip a
 ````
 
-5. Bring `eth1` on the first node down, and validate that on the second node `eth1` status changes to `<NO-CARRIER,BROADCAST,MULTICAST,UP,M-DOWN>`
+3. Bring `eth1` on the first node down, and validate that on the second node `eth1` status changes to `<NO-CARRIER,BROADCAST,MULTICAST,UP,M-DOWN>`
 
 ```Shell
 kubectl exec -it vm-1 -n 2node-host -- ip link set eth1 down
 kubectl exec -it vm-2 -n 2node-host -- ip a
 ````
 
-6. Bring `eth1` on the first node up, and validate that on the second node `eth1` status changes to `<BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN>`
+4. Bring `eth1` on the first node up, and validate that on the second node `eth1` status changes to `<BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN>`
 
 ```Shell
 kubectl exec -it vm-1 -n 2node-host -- ip link set eth1 up
 kubectl exec -it vm-2 -n 2node-host -- ip a
 ````
 
-7. Destroy the two-node topology
+5. Destroy the two-node topology
 
 ```Shell
 ./kne_cli/kne_cli delete ./examples/2node-host.pb.txt
 kubectl get pods -n 2node-host
 ````
 
-This concludes initial KNE deployment and validation steps. As part of the validation, we confirmed Meshnet CNI "wire" up/down operations between two nodes.
+This concludes KNE validation steps. As part of the validation, we confirmed Meshnet CNI "wire" up/down operations between two nodes.
 
 ## Misc
 

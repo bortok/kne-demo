@@ -135,6 +135,23 @@ kops validate cluster $CLUSTER --wait 10m
 kubectl apply -f configs/meshnet.yaml
 kubectl get pods -n meshnet
 ````
+
+9. To make kOps environment persistent accross multiple shell sesssions, set the following env variables in `$HOME/.bash_profile`:
+
+```Shell
+cat >> $HOME/.bash_profile << EOF
+# Set kOps environment for KNE
+export KOPS_STATE_STORE=gs://kne-demo-bucket-${USER}
+export KOPS_FEATURE_FLAGS=AlphaAllowGCE
+EOF
+```
+
+Now try validating the cluster status in a new shell session
+
+```Shell
+kops validate cluster $USER.k8s.local --wait 10m
+```
+
 ## Validate KNE operations
 
 1. To validate KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
@@ -176,22 +193,6 @@ kubectl get pods -n 2node-host
 This concludes KNE validation steps. As part of the validation, we confirmed Meshnet CNI "wire" up/down operations between two nodes.
 
 ## Misc
-
-* To make kOps environment persistent accross multiple shell sesssions, set the following env variables in `$HOME/.bash_profile`:
-
-```Shell
-cat >> $HOME/.bash_profile << EOF
-# Set kOps environment for KNE
-export KOPS_STATE_STORE=gs://kne-demo-bucket-${USER}
-export KOPS_FEATURE_FLAGS=AlphaAllowGCE
-EOF
-```
-
-Now try validating the cluster status in a new shell session
-
-```Shell
-kops validate cluster $USER.k8s.local --wait 10m
-```
 
 * Kubectl configuration created by kOps contains API keys with expiration of 1 day. To refresh the keys, run the following command
 

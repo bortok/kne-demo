@@ -33,6 +33,23 @@ gcloud auth application-default login
 5. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 6. Install [Go](https://golang.org/dl/) for your platform
 
+## Install KNE
+
+1. Clone KNE repository
+
+```Shell
+git clone https://github.com/google/kne.git
+cd kne
+````
+
+2. Compile KNE
+
+```Shell
+cd kne_cli
+go build 
+cd ..
+````
+
 ## Adopting command syntax to your environment
 
 1. Throughout the document, a GCP Project ID parameter `--project=kt-nas-demo` is used for `gcloud` command syntax. Please change `kt-nas-demo` to specify a GCP Project ID you intend to use for the deployment
@@ -118,24 +135,9 @@ kops validate cluster $CLUSTER --wait 10m
 kubectl apply -f configs/meshnet.yaml
 kubectl get pods -n meshnet
 ````
-## Deploy KNE
+## Validate KNE operations
 
-1. Clone KNE repository
-
-```Shell
-git clone https://github.com/google/kne.git
-cd kne
-````
-
-2. Compile KNE
-
-```Shell
-cd kne_cli
-go build 
-cd ..
-````
-
-3. To test KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
+3. To validate KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
 
 ```Shell
 ./kne_cli/kne_cli create ./examples/2node-host.pb.txt

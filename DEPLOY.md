@@ -110,7 +110,6 @@ gcloud compute firewall-rules create kne-demo-allow-health-checks \
 
 [//]: # (TODO remove H/C rules since kops is not using then)
 
-
 7. Create a K8s cluster using kOps
 
 ```Shell
@@ -192,6 +191,91 @@ kubectl get pods -n 2node-host
 
 This concludes KNE validation steps. As part of the validation, we confirmed Meshnet CNI "wire" up/down operations between two nodes.
 
+## Initialize Ixia Traffic Generator (Athena) subsystem
+
+1. Clone `keysight` repository from Ixia Athena development project
+
+[//]: # (TODO cd to top directory)
+
+```Shell
+gcloud source repos clone keysight --project=kt-nts-athena-dev
+````
+
+2. Create a namespace and a secret for Ixia K8s Operator
+
+```Shell
+EMAIL=<your email>
+kubectl create ns ixiatg-op-system
+kubectl create secret -n ixiatg-op-system docker-registry ixia-pull-secret \
+  --docker-server=us-central1-docker.pkg.dev \
+  --docker-username=_json_key \
+  --docker-password="$(cat athena-g.json)" \
+  --docker-email=$EMAIL
+kubectl annotate secret ixia-pull-secret -n ixiatg-op-system secretsync.ixiatg.com/replicate='true'
+````
+
+3. Deploy Ixia Operator which will watch for CRD creation by KNE. This step requires a secret (explained in previous point) to successfully deploy the operator.
+
+```Shell
+kubectl apply -f keysight/athena/operator/ixiatg-operator.yaml
+kubectl get pods -n ixiatg-op-system
+````
+
+4. Deploy Athena Controller POD and ingress in default namespace. The POD has 3 containers - Athena controller, gNMI service, gRPC service.
+
+[//]: # (TODO why are we using default namespace?)
+
+[//]: # (TODO Ingress is only needed if test has to be run from outside the cluster. The loadbalancer has to be configured accordingly. The ingress will open the trafic from outside at 443. Both athena controller and gnmi server could be reached via 443.)
+
+```Shell
+kubectl apply -f keysight/athena/controller/athena.yaml
+kubectl apply -f keysight/athena/controller/athena-ingress.yaml
+kubectl get pods
+````
+
+5. Validate Athena subsystem using KNE CLI
+
+[//]: # (TODO we need much simpler topology, preferably back-2-back for initial validation.)
+
+## Run Arista dataplane test with Ixia Traffic Generator (Athena)
+
+1. Create Ixia_TG + Arista topology
+
+```Shell
+./kne/kne_cli/kne_cli create keysight/athena/kne/kne_config.txt
+./kne/kne_cli/kne_cli show keysight/athena/kne/kne_config.txt
+kubectl get pods -n athena-dataplane
+````
+
+2. Once all the PODs the topology are running, push configuration files to Arista nodes
+
+```Shell
+./kne/kne_cli/kne_cli topology push keysight/athena/kne/kne_config.txt arista1 keysight/athena/kne/arista1_dual_config.txt
+./kne/kne_cli/kne_cli topology push keysight/athena/kne/kne_config.txt arista2 keysight/athena/kne/arista2_dual_config.txt
+````
+
+[//]: # (TODO INFO[0000] Pushing config to athena-dataplane:arista1)
+[//]: # (TODO Error: inappropriate ioctl for device)
+
+3. Run test
+
+[//]: # (TODO figure out how to run)
+
+4. Destroy the Ixia_TG + Arista topology
+
+```Shell
+./kne/kne_cli/kne_cli delete keysight/athena/kne/kne_config.txt
+kubectl get pods -n athena-dataplane
+````
+
+## Destroy KNE cluster
+
+* To delete K8s cluster created by kOps, use
+
+```Shell
+kops delete cluster $USER.k8s.local --yes
+````
+
 ## Misc
 
 * Kubectl configuration created by kOps contains API keys with expiration of 1 day. To refresh the keys, run the following command
@@ -200,8 +284,3 @@ This concludes KNE validation steps. As part of the validation, we confirmed Mes
 kops export kubecfg $USER.k8s.local
 ````
 
-* To delete K8s cluster created by kOps, use
-
-```Shell
-kops delete cluster $USER.k8s.local --yes
-````

@@ -232,16 +232,14 @@ kubectl apply -f keysight/athena/controller/athena.yaml
 kubectl get pods
 ````
 
-5. Deploy a `test-client` POD
-
-[//]: # (TODO move it to a detault namespace?)
+5. Deploy a `test-client` POD for running test packages from inside the KNE cluster
 
 ```Shell
 kubectl apply -f kne-demo/configs/test-client.yaml
-kubectl get pods -n ixiatg-op-system
+kubectl get pods
 ````
 
-5. Validate Athena subsystem using KNE CLI
+6. Validate Athena subsystem using KNE CLI
 
 [//]: # (TODO we need much simpler topology, preferably back-2-back for initial validation.)
 
@@ -270,8 +268,8 @@ kubectl get pods -n athena-dataplane
 3. Copy and run a test package. This package would execute two tests, one for BGPv4 and another for BGPv6
 
 ```Shell
-kubectl cp keysight/athena/sample-tests test-client:/home/tests/sample-tests -n ixiatg-op-system
-kubectl exec -it test-client -n ixiatg-op-system -- /bin/bash -c "cd sample-tests/tests; go test"
+kubectl cp keysight/athena/sample-tests test-client:/home/tests/sample-tests
+kubectl exec -it test-client -- /bin/bash -c "cd sample-tests/tests; go test"
 ````
 
 4. Destroy the Ixia_TG + Arista topology once the testing is over

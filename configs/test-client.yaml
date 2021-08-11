@@ -4,7 +4,7 @@ metadata:
   name: test-client
   labels:
     app: test-client
-  namespace: ixiatg-op-system
+  namespace: default
 spec:
   containers:
   - name: test-client

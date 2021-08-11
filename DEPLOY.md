@@ -221,7 +221,7 @@ kubectl apply -f keysight/athena/operator/ixiatg-operator.yaml
 kubectl get pods -n ixiatg-op-system
 ````
 
-4. Deploy Athena Controller POD and ingress in default namespace. The POD has 3 containers - Athena controller, gNMI service, gRPC service.
+4. Deploy Athena Controller POD. The POD has 3 containers - Athena controller, gNMI service, gRPC service.
 
 [//]: # (TODO why are we using default namespace?)
 
@@ -229,8 +229,16 @@ kubectl get pods -n ixiatg-op-system
 
 ```Shell
 kubectl apply -f keysight/athena/controller/athena.yaml
-kubectl apply -f keysight/athena/controller/athena-ingress.yaml
 kubectl get pods
+````
+
+5. Deploy a `test-client` POD
+
+[//]: # (TODO move it to a detault namespace?)
+
+```Shell
+kubectl apply -f kne-demo/configs/test-client.yaml
+kubectl get pods -n ixiatg-op-system
 ````
 
 5. Validate Athena subsystem using KNE CLI
@@ -240,6 +248,8 @@ kubectl get pods
 ## Run Arista dataplane test with Ixia Traffic Generator (Athena)
 
 1. Create Ixia_TG + Arista topology
+
+[//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
 
 ```Shell
 ./kne/kne_cli/kne_cli create keysight/athena/kne/kne_config.txt
@@ -257,11 +267,14 @@ kubectl get pods -n athena-dataplane
 [//]: # (TODO INFO[0000] Pushing config to athena-dataplane:arista1)
 [//]: # (TODO Error: inappropriate ioctl for device)
 
-3. Run test
+3. Copy and run a test package. This package would execute two tests, one for BGPv4 and another for BGPv6
 
-[//]: # (TODO figure out how to run)
+```Shell
+kubectl cp keysight/athena/sample-tests test-client:/home/tests/sample-tests -n ixiatg-op-system
+kubectl exec -it test-client -n ixiatg-op-system -- /bin/bash -c "cd sample-tests/tests; go test"
+````
 
-4. Destroy the Ixia_TG + Arista topology
+4. Destroy the Ixia_TG + Arista topology once the testing is over
 
 ```Shell
 ./kne/kne_cli/kne_cli delete keysight/athena/kne/kne_config.txt

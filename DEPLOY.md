@@ -122,7 +122,7 @@ export ZONES=us-west1-b
 export VPC=kne-demo
 export SVCACCNT=athena-g@kt-nas-demo.iam.gserviceaccount.com
 
-./scripts/cluster_deploy.sh
+./kne-demo/scripts/cluster_deploy.sh
 
 sleep 300
 kops validate cluster $CLUSTER --wait 10m
@@ -131,7 +131,7 @@ kops validate cluster $CLUSTER --wait 10m
 8. Add Meshnet CNI to K8s cluster and validate `meshnet` namespace is present in the cluster
 
 ```Shell
-kubectl apply -f configs/meshnet.yaml
+kubectl apply -f ./kne-demo/configs/meshnet.yaml
 kubectl get pods -n meshnet
 ````
 
@@ -196,6 +196,7 @@ This concludes KNE validation steps. As part of the validation, we confirmed Mes
 1. Clone `keysight` repository from Ixia Athena development project
 
 [//]: # (TODO cd to top directory)
+[//]: # (TODO this should be moved up into prereq)
 
 ```Shell
 gcloud source repos clone keysight --project=kt-nts-athena-dev
@@ -239,9 +240,30 @@ kubectl apply -f kne-demo/configs/test-client.yaml
 kubectl get pods
 ````
 
-6. Validate Athena subsystem using KNE CLI
+## Run Ixia Traffic Generator (Athena) back-2-back BGPv4 dataplane test
 
-[//]: # (TODO we need much simpler topology, preferably back-2-back for initial validation.)
+1. Create Ixia back-2-back topology
+
+```Shell
+./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-b2b_config.txt
+./kne/kne_cli/kne_cli show kne-demo/topologies/kne_ixia-b2b_config.txt
+kubectl get pods -n athena-dataplane
+````
+
+2. Copy and run a test package. This package would execute one BGPv4 test
+
+```Shell
+kubectl cp keysight/athena/sample-tests test-client:/home/tests/
+kubectl cp kne-demo/kne-demo-tests test-client:/home/tests/sample-tests/
+kubectl exec -it test-client -- /bin/bash -c "cd sample-tests/kne-demo-tests; go test"
+````
+
+4. Destroy the Ixia_TG + Arista topology once the testing is over
+
+```Shell
+./kne/kne_cli/kne_cli delete kne-demo/topologies/kne_ixia-b2b_config.txt
+kubectl get pods -n athena-dataplane
+````
 
 ## Run Arista dataplane test with Ixia Traffic Generator (Athena)
 

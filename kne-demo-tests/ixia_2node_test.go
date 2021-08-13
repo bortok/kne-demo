@@ -23,13 +23,12 @@ func TestPacketForwardBgpv4(t *testing.T) {
 //}
 
 func packetForward(t *testing.T) {
-	var arista [][]string
 
 	flag.Parse()
 
 	utils.LogTestInput()
 
-	inputErrors := utils.ValidateInput(3, 2, &arista)
+	inputErrors := utils.ValidateInput(2)
 	if inputErrors == true {
 		t.Errorf("Aborting test run due to input errors.")
 		return

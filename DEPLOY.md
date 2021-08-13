@@ -253,9 +253,10 @@ kubectl get pods -n athena-dataplane
 2. Copy and run a test package. This package would execute one BGPv4 test
 
 ```Shell
-kubectl cp keysight/athena/sample-tests test-client:/home/tests/
-kubectl cp kne-demo/kne-demo-tests test-client:/home/tests/sample-tests/
-kubectl exec -it test-client -- /bin/bash -c "cd sample-tests/kne-demo-tests; go test"
+kubectl cp keysight/athena/sample-tests/otgclient test-client:/home/tests/
+kubectl cp kne-demo/utils test-client:/home/tests/
+kubectl cp kne-demo/kne-demo-tests test-client:/home/tests/
+kubectl exec -it test-client -- /bin/bash -c "cd kne-demo-tests; go test"
 ````
 
 4. Destroy the Ixia_TG + Arista topology once the testing is over

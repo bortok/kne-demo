@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-client
+  labels:
+    app: test-client
+  namespace: default
+spec:
+  containers:
+  - name: test-client
+    image: us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/test-client:v1
+    imagePullPolicy: IfNotPresent
+    command: ["tail"]
+    args: ["-f", "/dev/null"]
+  imagePullSecrets:
+  - name: ixia-pull-secret

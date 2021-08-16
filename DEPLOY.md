@@ -318,3 +318,23 @@ kops delete cluster $USER.k8s.local --yes
 kops export kubecfg $USER.k8s.local
 ````
 
+## Updating to the latest code
+
+1. Bring KNE local copy to the latest
+
+```Shell
+cd kne
+git fetch origin
+git pull origin
+cd kne_cli
+go build 
+````
+
+2. Bring Athena local copy to the latest
+
+```Shell
+cd keysight
+git fetch origin
+git pull origin
+````
+

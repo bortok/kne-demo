@@ -3,16 +3,16 @@
 ## Overview
 This deployment of [KNE](https://github.com/google/kne) would be using Google Cloud infrastructure with a custom Kubernetes cluster installed as part of the setup. This document is divided into following sections:
 
-* [Prerequisites](https://github.com/bortok/kne-demo/blob/main/DEPLOY.md#prerequisites)
-* [Install KNE Command Line Tool](https://github.com/bortok/kne-demo/blob/main/DEPLOY.md#install-kne-command-line-tool)
-* [Deploy Kubernetes Cluster for KNE](https://github.com/bortok/kne-demo/blob/main/DEPLOY.md#deploy-kubernetes-cluster-for-kne)
+* [Prerequisites](#prerequisites)
+* [Install KNE Command Line Tool](#install-kne-command-line-tool)
+* [Deploy Kubernetes Cluster for KNE](#deploy-kubernetes-cluster-for-kne)
 * [Validate KNE operations](#validate-kne-operations)
-* Initialize Ixia Traffic Generator (Athena) subsystem
-* Run Ixia Traffic Generator (Athena) back-2-back BGPv4 dataplane test
-* Run Arista dataplane test with Ixia Traffic Generator (Athena)
-* Destroy KNE cluster
-* Misc
-* Updating to the latest code
+* [Initialize Ixia Traffic Generator (Athena) subsystem](#initialize-ixia-traffic-generator-athena-subsystem)
+* [Run Ixia Traffic Generator (Athena) back-2-back BGPv4 dataplane test](#run-ixia-traffic-generator-athena-back-2-back-bgpv4-dataplane-test)
+* [Run Arista dataplane test with Ixia Traffic Generator (Athena)](#run-arista-dataplane-test-with-ixia-traffic-generator-athena)
+* [Destroy KNE cluster](#destroy-kne-cluster)
+* [Misc](#misc)
+* [Updating to the latest code](#updating-to-the-latest-code)
 
 ## Prerequisites
 

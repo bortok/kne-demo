@@ -1,7 +1,18 @@
 # KNE and Athena Deployment
 
 ## Overview
-This deployment of [KNE](https://github.com/google/kne) would be using Google Cloud infrastructure with a custom Kubernetes cluster installed as part of the setup.
+This deployment of [KNE](https://github.com/google/kne) would be using Google Cloud infrastructure with a custom Kubernetes cluster installed as part of the setup. This document is divided into following sections:
+
+* [Prerequisites](https://github.com/bortok/kne-demo/blob/main/DEPLOY.md#prerequisites)
+* [Install KNE Command Line Tool](https://github.com/bortok/kne-demo/blob/main/DEPLOY.md#install-kne-command-line-tool)
+* [Deploy Kubernetes Cluster for KNE](https://github.com/bortok/kne-demo/blob/main/DEPLOY.md#deploy-kubernetes-cluster-for-kne)
+* [Validate KNE operations](#validate-kne-operations)
+* Initialize Ixia Traffic Generator (Athena) subsystem
+* Run Ixia Traffic Generator (Athena) back-2-back BGPv4 dataplane test
+* Run Arista dataplane test with Ixia Traffic Generator (Athena)
+* Destroy KNE cluster
+* Misc
+* Updating to the latest code
 
 ## Prerequisites
 
@@ -33,7 +44,7 @@ gcloud auth application-default login
 5. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 6. Install [Go](https://golang.org/dl/) for your platform
 
-## Install KNE
+## Install KNE Command Line Tool
 
 1. Clone KNE repository
 
@@ -55,7 +66,7 @@ cd ..
 1. Throughout the document, a GCP Project ID parameter `--project=kt-nas-demo` is used for `gcloud` command syntax. Please change `kt-nas-demo` to specify a GCP Project ID you intend to use for the deployment
 2. Where applicable, GCP Region `us-west1` (Oregon) and/or Zone `us-west1-b` are used withing the document. Consider changing to a region and zone that fit your deployment via `--region=us-west1` and `--zone=us-west1-b` parameters.
 
-## Initialize a Kubernetes Cluster for KNE
+## Deploy Kubernetes Cluster for KNE
 
 1. Create a VPC network for K8s cluster deployment
 

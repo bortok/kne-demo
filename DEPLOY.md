@@ -33,7 +33,7 @@ gcloud iam service-accounts keys create athena-g.json --iam-account=athena-g@kt-
 ````
 
 [//]: # (TODO proper location for athena-g.json file)
-[//]: # (TODO what is a proper way to request access to the artifacts?)
+[//]: # (TODO GAP what is a proper way to request access to the artifacts?)
 
 4. Acquire new user credentials to use for Application Default Credentials
 
@@ -98,6 +98,7 @@ gcloud compute firewall-rules create kne-demo-allow-https --project=kt-nas-demo 
 ![Adding IAM roles for the service account](images/IAM_Add_Roles.png)
 ![After the roles were added](images/IAM_Roles_athena-g.png)
 
+[//]: # (TODO replace with gcloud cli syntax)
 
 5. Create a storage bucket for kOps to keep K8s cluster configuration
 
@@ -251,6 +252,8 @@ kubectl apply -f kne-demo/configs/test-client.yaml
 kubectl get pods
 ````
 
+[//]: # (TODO GAP test-client should come with otgclient.go and utils.go)
+
 ## Run Ixia Traffic Generator (Athena) back-2-back BGPv4 dataplane test
 
 1. Create Ixia back-2-back topology
@@ -269,6 +272,8 @@ kubectl cp kne-demo/utils test-client:/home/tests/
 kubectl cp kne-demo/kne-demo-tests test-client:/home/tests/
 kubectl exec -it test-client -- /bin/bash -c "cd kne-demo-tests; go test"
 ````
+
+[//]: # (TODO GAP utils.go has code specific to a topology)
 
 4. Destroy the Ixia_TG + Arista topology once the testing is over
 
@@ -297,7 +302,7 @@ kubectl get pods -n athena-dataplane
 ````
 
 [//]: # (TODO INFO[0000] Pushing config to athena-dataplane:arista1)
-[//]: # (TODO Error: inappropriate ioctl for device)
+[//]: # (TODO Error: inappropriate ioctl for device - when running from Mac. No problem with Linux)
 
 3. Copy and run a test package. This package would execute two tests, one for BGPv4 and another for BGPv6
 

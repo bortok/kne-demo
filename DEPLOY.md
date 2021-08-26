@@ -258,9 +258,9 @@ kubectl get pods
 
 Please refer to the following guides on running sample Athena tests in KNE
 
-1. [Athena back-2-back BGPv4 dataplane test](SAMPLE_TESTS.md#)
-2. [Arista BGPv4/BGPv6 dataplane tests over a VLAN](SAMPLE_TESTS.md#)
-3. [Arista BGPv4/BGPv6 dataplane tests with ARP (no VLAN)](SAMPLE_TESTS.md#)
+1. [Athena back-2-back BGPv4 dataplane test](SAMPLE_TESTS.md#ixia-traffic-generator-athena-back-2-back-bgpv4-dataplane-test)
+2. [Arista BGPv4/BGPv6 dataplane tests over a VLAN](SAMPLE_TESTS.md#arista-dataplane-test-with-ixia-traffic-generator-athena---version-with-vlans)
+3. [Arista BGPv4/BGPv6 dataplane tests with ARP (no VLAN)](SAMPLE_TESTS.md#arista-dataplane-test-with-ixia-traffic-generator-athena---version-without-vlans)
 
 ## Destroy KNE cluster
 

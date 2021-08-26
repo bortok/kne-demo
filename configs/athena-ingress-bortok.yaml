@@ -1,0 +1,73 @@
+#apiVersion: networking.k8s.io/v1beta1
+#kind: Ingress
+#metadata:
+#  name: athena-ingress
+#  annotations:
+#    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"  
+#spec:
+#  tls:
+#  - hosts:
+#    - "hashwini.keysight.com"
+#    secretName: nginx 
+#  rules:
+#  - host: "hashwini.keysight.com"
+#    http:
+#      paths:
+#      - path: /
+#        backend:
+#          serviceName: athena-service
+#          servicePort: 443 
+#---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: gnmi-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/grpc-backend: "true"  
+spec:
+  tls:
+  - hosts:
+    - "athena-g.ixlab.org"
+    secretName: nginx 
+  rules:
+  - host: "athena-g.ixlab.org"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /gnmi.gNMI/
+        backend:
+          serviceName: gnmi-service
+          servicePort: grpc
+      - pathType: Prefix
+        path: /grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo
+        backend:
+          serviceName: gnmi-service
+          servicePort: grpc
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: grpc-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/grpc-backend: "true"  
+spec:
+  tls:
+  - hosts:
+    - "athena-g.ixlab.org"
+    secretName: nginx 
+  rules:
+  - host: "athena-g.ixlab.org"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          serviceName: grpc-service
+          servicePort: 40051
+

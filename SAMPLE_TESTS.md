@@ -50,13 +50,23 @@ kubectl get pods -n athena-dataplane
 [//]: # (TODO INFO[0000] Pushing config to athena-dataplane:arista1)
 [//]: # (TODO Error: inappropriate ioctl for device - when running from Mac. No problem with Linux)
 
-3. Copy and run a test package. This package would execute two tests, one for BGPv4 and another for BGPv6
+3. Copy a test package. This package contains two tests, one for BGPv4, with BGPv6. MACs are learned from Aristas over SSH. BGP peering status is not monitored
 
 ```Shell
 kubectl exec -it test-client -- /bin/bash -c "rm -rf sample-tests"
 kubectl cp keysight/athena/sample-tests test-client:/home/tests/sample-tests
-kubectl exec -it test-client -- /bin/bash -c "cd sample-tests/tests; go test -v -run TestPacketForwardBgpv4"
-kubectl exec -it test-client -- /bin/bash -c "cd sample-tests/tests; go test -v -run TestPacketForwardBgpv6"
+````
+
+4. Run raw traffic and BGPv4 metric test
+
+```Shell
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv4$"'
+````
+
+5. Run raw traffic and BGPv6 metric test
+
+```Shell
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv6$"'
 ````
 
 4. Destroy the Ixia_TG + Arista topology once the testing is over
@@ -67,6 +77,8 @@ kubectl get pods -n athena-dataplane
 ````
 
 ## Arista dataplane test with Ixia Traffic Generator (Athena) - version without VLANs
+
+In these sample tests Athena nodes use ARP to learn MAC addresses of Arista nodes.
 
 1. Create Ixia_TG + Arista topology
 
@@ -88,12 +100,24 @@ kubectl get pods -n athena-dataplane
 [//]: # (TODO INFO[0000] Pushing config to athena-dataplane:arista1)
 [//]: # (TODO Error: inappropriate ioctl for device - when running from Mac. No problem with Linux)
 
-3. Copy and run a test package. This package would execute two tests, one for BGPv4 and another for BGPv6
+3. Copy a test package. This package contains two tests, one for BGPv4, with BGPv4 metrics used to pull status, and another for BGPv6, w/o use of the metrics
 
 ```Shell
 kubectl exec -it test-client -- /bin/bash -c "rm -rf sample-tests"
 kubectl cp keysight/athena/sample-tests test-client:/home/tests/sample-tests
 kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv4NoVlan$"'
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv6NoVlan$"'
+````
+
+4. Run non-raw traffic and BGPv4 metric test
+
+```Shell
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv4NoVlan$"'
+````
+
+5. Run raw traffic test over BGPv6
+
+```Shell
 kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv6NoVlan$"'
 ````
 

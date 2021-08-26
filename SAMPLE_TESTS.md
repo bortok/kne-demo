@@ -167,7 +167,7 @@ kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test 
 kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestIbgpv6VlanRoutes -tags=arista'
 ````
 
-5. Run non-Raw traffic and BGPv4 metric tests
+5. Run non-raw traffic and BGPv4 metric tests
 
 ```Shell
 kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestPacketForwardNonRawBgpMetrics -tags=arista'

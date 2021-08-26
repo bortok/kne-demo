@@ -261,7 +261,7 @@ Please refer to the following guides on running sample Athena tests in KNE
 1. [Athena back-2-back BGPv4 dataplane test](SAMPLE_TESTS.md#ixia-traffic-generator-athena-back-2-back-bgpv4-dataplane-test)
 2. [Arista BGPv4/BGPv6 dataplane tests over a VLAN](SAMPLE_TESTS.md#arista-dataplane-test-with-ixia-traffic-generator-athena---version-with-vlans)
 3. [Arista BGPv4/BGPv6 dataplane tests without a VLAN)](SAMPLE_TESTS.md#arista-dataplane-test-with-ixia-traffic-generator-athena---version-without-vlans)
-4. [Second generation of Arista BGPv4/BGPv6 dataplane tests](SAMPLE_TESTS.md#)
+4. [Second generation of Arista BGPv4/BGPv6 dataplane tests](SAMPLE_TESTS.md#second-generation-of-sample-tests-for-arista-dataplane-test-with-ixia-traffic-generator-athena)
 
 ## Destroy KNE cluster
 

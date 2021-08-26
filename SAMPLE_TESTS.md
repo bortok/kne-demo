@@ -71,7 +71,7 @@ kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v 
 kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv6$"'
 ````
 
-4. Destroy the Ixia_TG + Arista topology once the testing is over
+6. Destroy the Ixia_TG + Arista topology once the testing is over
 
 ```Shell
 ./kne/kne_cli/kne_cli delete keysight/athena/kne/kne_config.txt
@@ -107,8 +107,6 @@ watch kubectl get pods -n athena-dataplane
 ```Shell
 kubectl exec -it test-client -- /bin/bash -c "rm -rf sample-tests"
 kubectl cp keysight/athena/sample-tests test-client:/home/tests/sample-tests
-kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv4NoVlan$"'
-kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv6NoVlan$"'
 ````
 
 4. Run non-raw traffic and BGPv4 metric test
@@ -123,7 +121,59 @@ kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v 
 kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests/tests; go test -v -run "^TestPacketForwardBgpv6NoVlan$"'
 ````
 
-4. Destroy the Ixia_TG + Arista topology once the testing is over
+6. Destroy the Ixia_TG + Arista topology once the testing is over
+
+```Shell
+./kne/kne_cli/kne_cli delete keysight/athena/kne/kne_config_no_vlan.txt
+kubectl get pods -n athena-dataplane
+````
+
+## Second generation of sample tests for Arista dataplane test with Ixia Traffic Generator (Athena)
+
+This test suite contains new set of test cases along with several helper utils for better test writing experience. It also configures DUTs (Aristas) as part of the test run, instead of requiring to preconfigure before running the test, as in the first generation of sample tests above.
+
+1. Create Ixia_TG + Arista topology
+
+[//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
+
+```Shell
+./kne/kne_cli/kne_cli create keysight/athena/kne/kne_config.txt
+./kne/kne_cli/kne_cli show keysight/athena/kne/kne_config.txt
+watch kubectl get pods -n athena-dataplane
+````
+
+  Once all PODs are running, terminate via ^C.
+
+2. Once all the PODs the topology are running, enable SSH on Arista nodes
+
+```Shell
+./kne/kne_cli/kne_cli topology push keysight/athena/kne/kne_config.txt arista1 keysight/athena/sample-tests-v2/enable_ssh_arista_config.txt
+./kne/kne_cli/kne_cli topology push keysight/athena/kne/kne_config.txt arista2 keysight/athena/sample-tests-v2/enable_ssh_arista_config.txt
+````
+
+3. Copy a test package. This package contains two tests, one for BGPv4, with BGPv4 metrics used to pull status, and another for BGPv6, w/o use of the metrics
+
+```Shell
+kubectl exec -it test-client -- /bin/bash -c "rm -rf sample-tests-v2"
+kubectl cp keysight/athena/sample-tests-v2 test-client:/home/tests/sample-tests-v2
+````
+
+4. Run raw traffic tests
+
+```Shell
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestEbgpv4Routes -tags=arista'
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestEbgpv6Routes -tags=arista'
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestIbgpv4VlanRoutes -tags=arista'
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestIbgpv6VlanRoutes -tags=arista'
+````
+
+5. Run non-Raw traffic and BGPv4 metric tests
+
+```Shell
+kubectl exec -it test-client -- /bin/bash -c 'cd sample-tests-v2/tests; go test -v -run=TestPacketForwardNonRawBgpMetrics -tags=arista'
+````
+
+6. Destroy the Ixia_TG + Arista topology once the testing is over
 
 ```Shell
 ./kne/kne_cli/kne_cli delete keysight/athena/kne/kne_config_no_vlan.txt

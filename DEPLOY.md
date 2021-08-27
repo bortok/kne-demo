@@ -8,8 +8,7 @@ This deployment of [KNE](https://github.com/google/kne) would be using Google Cl
 * [Deploy Kubernetes Cluster for KNE](#deploy-kubernetes-cluster-for-kne)
 * [Validate KNE operations](#validate-kne-operations)
 * [Initialize Ixia Traffic Generator (Athena) subsystem](#initialize-ixia-traffic-generator-athena-subsystem)
-* [Run Ixia Traffic Generator (Athena) back-2-back BGPv4 dataplane test](#run-ixia-traffic-generator-athena-back-2-back-bgpv4-dataplane-test)
-* [Run Arista dataplane test with Ixia Traffic Generator (Athena)](#run-arista-dataplane-test-with-ixia-traffic-generator-athena)
+* [Run sample tests in KNE with Athena](#run-sample-tests-in-kne-with-athena)
 * [Destroy KNE cluster](#destroy-kne-cluster)
 * [Misc](#misc)
 * [Updating to the latest code](#updating-to-the-latest-code)
@@ -254,7 +253,7 @@ kubectl get pods
 
 [//]: # (TODO GAP test-client should come with otgclient.go and utils.go)
 
-## Running sample tests in KNE with Athena
+## Run sample tests in KNE with Athena
 
 Please refer to the following guides on running sample Athena tests in KNE
 

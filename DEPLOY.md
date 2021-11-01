@@ -42,12 +42,7 @@ gcloud auth application-default login
 
 5. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 6. Install [Go](https://golang.org/dl/) for your platform
-7. [Install `kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
-
-````
-curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-sudo mv kustomize /usr/local/bin/
-````
+7. Install [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
 
 ## Install KNE Command Line Tool
 

@@ -42,6 +42,12 @@ gcloud auth application-default login
 
 5. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 6. Install [Go](https://golang.org/dl/) for your platform
+7. [Install `kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
+
+````
+curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+sudo mv kustomize /usr/local/bin/
+````
 
 ## Install KNE Command Line Tool
 
@@ -141,7 +147,7 @@ kops validate cluster $CLUSTER --wait 10m
 8. Add Meshnet CNI to K8s cluster and validate `meshnet` namespace is present in the cluster
 
 ```Shell
-kubectl apply -f ./kne-demo/configs/meshnet.yaml
+kustomize build ./kne/manifests/meshnet/base | kubectl apply -f -
 kubectl get pods -n meshnet
 ````
 
@@ -166,8 +172,8 @@ kops validate cluster $USER.k8s.local --wait 10m
 1. To validate KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
 
 ```Shell
-./kne_cli/kne_cli create ./examples/2node-host.pb.txt
-./kne_cli/kne_cli show ./examples/2node-host.pb.txt
+./kne/kne_cli/kne_cli create ./kne/examples/2node-host.pb.txt
+./kne/kne_cli/kne_cli show ./kne/examples/2node-host.pb.txt
 kubectl get pods -n 2node-host
 ````
 
@@ -195,7 +201,7 @@ kubectl exec -it vm-2 -n 2node-host -- ip a
 5. Destroy the two-node topology
 
 ```Shell
-./kne_cli/kne_cli delete ./examples/2node-host.pb.txt
+./kne/kne_cli/kne_cli delete ./kne/examples/2node-host.pb.txt
 kubectl get pods -n 2node-host
 ````
 

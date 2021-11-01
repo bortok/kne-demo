@@ -60,107 +60,12 @@ go build
 cd ../..
 ````
 
-## Adopting command syntax to your environment
+## Deploy Kubernetes cluster
 
-1. Throughout the document, a GCP Project ID parameter `--project=kt-nas-demo` is used for `gcloud` command syntax. Please change `kt-nas-demo` to specify a GCP Project ID you intend to use for the deployment
-2. Where applicable, GCP Region `us-west1` (Oregon) and/or Zone `us-west1-b` are used withing the document. Consider changing to a region and zone that fit your deployment via `--region=us-west1` and `--zone=us-west1-b` parameters.
+In this guide we support the following Kubernetes deployment options for running KNE. Please deploy a cluster using one of these methods and then return to the next step of this guide:
 
-## Deploy Kubernetes Cluster for KNE
-
-1. Create a VPC network for K8s cluster deployment
-
-| Parameter 						| Value
-| --- 									| ---
-| Name 									| `kne-demo`
-| Description 					| Kubernetes Network Emulation Demo
-| Subnets 							| Auto
-
-```Shell
-gcloud compute networks create kne-demo --project=kt-nas-demo --description="Kubernetes Network Emulation Demo" --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
-```
-
-2. Create firewall rules for the VPC - we're going to permit all internal connectivity for now, and SSH access from the outside
-
-```Shell
-gcloud compute firewall-rules create kne-demo-allow-internal --project=kt-nas-demo --network=projects/kt-nas-demo/global/networks/kne-demo --description=Allows\ connections\ from\ any\ source\ in\ the\ network\ IP\ range\ to\ any\ instance\ on\ the\ network\ using\ all\ protocols. --direction=INGRESS --priority=65534 --source-ranges=10.128.0.0/9 --action=ALLOW --rules=all
-gcloud compute firewall-rules create kne-demo-allow-ssh --project=kt-nas-demo --network=projects/kt-nas-demo/global/networks/kne-demo --description=Allows\ TCP\ connections\ from\ limited\ sources\ to\ any\ instance\ on\ the\ network\ using\ port\ 22. --direction=INGRESS --priority=65534 --source-ranges="`curl -s ifconfig.me`/32" --action=ALLOW --rules=tcp:22
-gcloud compute firewall-rules create kne-demo-allow-https --project=kt-nas-demo --network=projects/kt-nas-demo/global/networks/kne-demo --description=Allows\ TCP\ connections\ from\ limited\ sources\ to\ any\ instance\ on\ the\ network\ using\ port\ 443. --direction=INGRESS --priority=65534 --source-ranges="`curl -s ifconfig.me`/32" --action=ALLOW --rules=tcp:443
-```
-
-4. Give the service account created in Prerequisites section the following IAM roles
-
-	* Compute Instance Admin
-	* Compute Network Admin
-	* Storage Admin
-	* Service Account User
-
-![Adding IAM roles for the service account](images/IAM_Add_Roles.png)
-![After the roles were added](images/IAM_Roles_athena-g.png)
-
-[//]: # (TODO replace with gcloud cli syntax)
-
-5. Create a storage bucket for kOps to keep K8s cluster configuration
-
-```Shell
-gsutil mb -p kt-nas-demo -l us-west1 gs://kne-demo-bucket-${USER}
-````
-
-[//]: # (TODO this is somehow broken - once cluster is created, API can't be accessed. No problem with manually created storage bucket)
-
-
-6. Permit healthchecks
-
-```Shell
-gcloud compute firewall-rules create kne-demo-allow-health-checks \
-    --network=kne-demo \
-    --action=ALLOW \
-    --direction=INGRESS \
-    --source-ranges=35.191.0.0/16,130.211.0.0/22,209.85.152.0/22,209.85.204.0/22 \
-    --rules=tcp
-````
-
-[//]: # (TODO remove H/C rules since kops is not using then)
-
-7. Create a K8s cluster using kOps
-
-```Shell
-export KOPS_STATE_STORE=gs://kne-demo-bucket-${USER}
-export KOPS_FEATURE_FLAGS=AlphaAllowGCE
-
-export CLUSTER=$USER.k8s.local
-export SITE="`curl -s ifconfig.me`/32" # ip range you will be accessing cluster from
-export ZONES=us-west1-b
-export VPC=kne-demo
-export SVCACCNT=athena-g@kt-nas-demo.iam.gserviceaccount.com
-
-./kne-demo/scripts/cluster_deploy.sh
-
-sleep 300
-kops validate cluster $CLUSTER --wait 10m
-````
-
-8. Add Meshnet CNI to K8s cluster and validate `meshnet` namespace is present in the cluster
-
-```Shell
-kustomize build ./kne/manifests/meshnet/base | kubectl apply -f -
-kubectl get pods -n meshnet
-````
-
-9. To make kOps environment persistent accross multiple shell sesssions, set the following env variables in `$HOME/.bash_profile`:
-
-```Shell
-cat >> $HOME/.bash_profile << EOF
-# Set kOps environment for KNE
-export KOPS_STATE_STORE=gs://kne-demo-bucket-${USER}
-export KOPS_FEATURE_FLAGS=AlphaAllowGCE
-EOF
-```
-
-Now try validating the cluster status in a new shell session
-
-```Shell
-kops validate cluster $USER.k8s.local --wait 10m
-```
+* Single-machine KIND deployment (TBD)
+* [kOps-managed cluster in Google Cloud](DEPLOY-kOps.md)
 
 ## Validate KNE operations
 

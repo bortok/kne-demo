@@ -1,5 +1,16 @@
 # KNE deployment within kOps-managed Kubernetes cluster on Google Cloud
 
+## Prerequisites
+
+1. Acquire new user credentials to use for Application Default Credentials
+
+```Shell
+gcloud auth application-default login
+````
+
+2. Install [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
+3. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
+
 ## Adopting `gcloud` command syntax to your environment
 
 1. Throughout the document, a GCP Project ID parameter `--project=kt-nas-demo` is used for `gcloud` command syntax. Please change `kt-nas-demo` to specify a GCP Project ID you intend to use for the deployment
@@ -103,4 +114,13 @@ Now try validating the cluster status in a new shell session
 ```Shell
 kops validate cluster $USER.k8s.local --wait 10m
 ```
+
+## Misc
+
+* Kubectl configuration created by kOps contains API keys with expiration of 1 day. To refresh the keys, run the following command
+
+```Shell
+kops export kubecfg $USER.k8s.local
+````
+
 

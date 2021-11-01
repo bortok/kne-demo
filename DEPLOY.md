@@ -5,18 +5,20 @@ This deployment of [KNE](https://github.com/google/kne) would be using Google Cl
 
 * [Prerequisites](#prerequisites)
 * [Install KNE Command Line Tool](#install-kne-command-line-tool)
-* [Deploy Kubernetes Cluster for KNE](#deploy-kubernetes-cluster-for-kne)
+* [Deploy Kubernetes Cluster for KNE](#deploy-kubernetes-cluster)
 * [Validate KNE operations](#validate-kne-operations)
 * [Initialize Ixia Traffic Generator (Athena) subsystem](#initialize-ixia-traffic-generator-athena-subsystem)
 * [Run sample tests in KNE with Athena](#run-sample-tests-in-kne-with-athena)
 * [Destroy KNE cluster](#destroy-kne-cluster)
-* [Misc](#misc)
 * [Updating to the latest code](#updating-to-the-latest-code)
 
 ## Prerequisites
 
 1. A Google account with Google Cloud access
-2. Your Google account should be granted access to Keysight Athena repository at https://source.cloud.google.com/kt-nts-athena-dev/keysight/ (TODO what is a proper way to request access to the repo?)
+2. Your Google account should be granted access to Keysight Athena repository at https://source.cloud.google.com/kt-nts-athena-dev/keysight/ 
+
+[//]: # ((TODO what is a proper way to request access to the repo?)
+
 3. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs) and authenticate via
 
 ```Shell
@@ -34,15 +36,7 @@ gcloud iam service-accounts keys create athena-g.json --iam-account=athena-g@kt-
 [//]: # (TODO proper location for athena-g.json file)
 [//]: # (TODO GAP what is a proper way to request access to the artifacts?)
 
-4. Acquire new user credentials to use for Application Default Credentials
-
-```Shell
-gcloud auth application-default login
-````
-
-5. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 6. Install [Go](https://golang.org/dl/) for your platform
-7. Install [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
 
 ## Install KNE Command Line Tool
 
@@ -160,14 +154,6 @@ kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-genera
 
 ```Shell
 kops delete cluster $USER.k8s.local --yes
-````
-
-## Misc
-
-* Kubectl configuration created by kOps contains API keys with expiration of 1 day. To refresh the keys, run the following command
-
-```Shell
-kops export kubecfg $USER.k8s.local
 ````
 
 ## Updating to the latest code

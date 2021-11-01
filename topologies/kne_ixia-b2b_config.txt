@@ -1,8 +1,8 @@
 name: "ixia-c-b2b"
 nodes: {
-    name: "athena-traffic-engine1"
+    name: "ate1"
     type: IXIA_TG
-    version: "0.0.1-2185"
+    version: "0.0.1-2342"
     services: {
         key: 5555
         value: {
@@ -19,9 +19,9 @@ nodes: {
     }
 }
 nodes: {
-    name: "athena-traffic-engine2"
+    name: "ate2"
     type: IXIA_TG
-    version: "0.0.1-2185"
+    version: "0.0.1-2342"
     services: {
         key: 5555
         value: {
@@ -38,8 +38,8 @@ nodes: {
     }
 }
 links: {
-    a_node: "athena-traffic-engine1"
+    a_node: "ate1"
     a_int: "eth1"
-    z_node: "athena-traffic-engine2"
+    z_node: "ate2"
     z_int: "eth1"
 }

@@ -233,11 +233,20 @@ kubectl apply -f keysight/athena/operator/ixiatg-operator.yaml
 kubectl get pods -n ixiatg-op-system
 ````
 
-4. Deploy a `test-client` POD for running test packages from inside the KNE cluster
+4. Deploy `gosnappi` POD for running test packages from inside the KNE cluster
 
-```Shell
-kubectl apply -f kne-demo/configs/test-client.yaml
-kubectl get pods -n ixiatg-op-system
+````
+kubectl apply -f kne-demo/configs/gosnappi.yaml
+watch kubectl get pods
+````
+
+  Copy Athena sample tests and test utilities to that container
+
+````
+kubectl cp keysight/athena/sample-tests gosnappi:/go/
+kubectl exec -it gosnappi -- /bin/bash
+go get github.com/open-traffic-generator/snappi/gosnappi@v0.6.1
+exit
 ````
 
 ## Run sample tests in KNE with Athena

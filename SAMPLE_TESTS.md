@@ -13,11 +13,13 @@ kubectl get pods -n ixia-c-b2b
 2. Copy and run a test package. This package would execute one BGPv4 test
 
 ```Shell
-kubectl exec -it test-client -- /bin/bash -c "rm -rf otgclient utils kne-demo-tests"
-kubectl cp kne-demo/otgclient test-client:/home/tests/
-kubectl cp kne-demo/utils test-client:/home/tests/
-kubectl cp kne-demo/kne-demo-tests test-client:/home/tests/
-kubectl exec -it test-client -- /bin/bash -c "cd kne-demo-tests; go test"
+kubectl exec -it gosnappi -- /bin/bash -c "rm -rf /go/sample-tests/tests/*"
+kubectl cp keysight/athena/sample-tests/tests/init.go gosnappi:/go/sample-tests/tests/
+kubectl cp kne-demo/kne-demo-tests/tests/b2b_opts.json gosnappi:/go/sample-tests/tests/opts.json
+kubectl cp kne-demo/kne-demo-tests/tests/b2b_ebgpv4_routes_gosnappi_test.go gosnappi:/go/sample-tests/tests/
+kubectl exec -it gosnappi -- /bin/bash
+cd /go/sample-tests/tests
+go test -run=TestB2BEbgpv4RoutesGosnappi -v
 ````
 
 [//]: # (TODO GAP utils.go has code specific to a topology)

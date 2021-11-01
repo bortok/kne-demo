@@ -37,6 +37,11 @@ gcloud iam service-accounts keys create athena-g.json --iam-account=athena-g@kt-
 [//]: # (TODO GAP what is a proper way to request access to the artifacts?)
 
 6. Install [Go](https://golang.org/dl/) for your platform
+7. Install `kubectl`
+
+```Shell
+gcloud components install kubectl
+````
 
 ## Install KNE Command Line Tool
 
@@ -58,8 +63,24 @@ cd ../..
 
 In this guide we support the following Kubernetes deployment options for running KNE. Please deploy a cluster using one of these methods and then return to the next step of this guide:
 
-* Single-machine KIND deployment (TBD)
+* [Single-machine KIND deployment](#kind_cluster_deployment)
 * [kOps-managed cluster in Google Cloud](DEPLOY-kOps.md)
+
+### KIND cluster deployment
+
+1. Install [Docker](https://docs.docker.com/engine/install/)
+
+2. Install KIND Go module
+
+```Shell
+GO111MODULE="on" go install sigs.k8s.io/kind@latest
+````
+
+2. To deploy a KIND cluster on the same machine where KNE is installed, run
+
+```Shell
+./kne/kne_cli deploy kne/deploy/kne/kind.yaml
+````
 
 ## Validate KNE operations
 

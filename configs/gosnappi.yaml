@@ -1,0 +1,14 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: gosnappi
+  labels:
+    app: gosnappi
+  namespace: default
+spec:
+  containers:
+  - name: gosnappi
+    image: golang:latest
+    imagePullPolicy: IfNotPresent
+    command: ["tail"]
+    args: ["-f", "/dev/null"]

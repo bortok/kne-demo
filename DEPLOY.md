@@ -42,6 +42,7 @@ gcloud auth application-default login
 
 5. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 6. Install [Go](https://golang.org/dl/) for your platform
+7. Install [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
 
 ## Install KNE Command Line Tool
 
@@ -49,15 +50,14 @@ gcloud auth application-default login
 
 ```Shell
 git clone https://github.com/google/kne.git
-cd kne
 ````
 
 2. Compile KNE
 
 ```Shell
-cd kne_cli
+cd kne/kne_cli
 go build 
-cd ..
+cd ../..
 ````
 
 ## Adopting command syntax to your environment
@@ -142,7 +142,7 @@ kops validate cluster $CLUSTER --wait 10m
 8. Add Meshnet CNI to K8s cluster and validate `meshnet` namespace is present in the cluster
 
 ```Shell
-kubectl apply -f ./kne-demo/configs/meshnet.yaml
+kustomize build ./kne/manifests/meshnet/base | kubectl apply -f -
 kubectl get pods -n meshnet
 ````
 
@@ -167,8 +167,8 @@ kops validate cluster $USER.k8s.local --wait 10m
 1. To validate KNE operations, create a simple two-node topology and validate `2node-host` namespace is present in the cluster
 
 ```Shell
-./kne_cli/kne_cli create ./examples/2node-host.pb.txt
-./kne_cli/kne_cli show ./examples/2node-host.pb.txt
+./kne/kne_cli/kne_cli create ./kne/examples/2node-host.pb.txt
+./kne/kne_cli/kne_cli show ./kne/examples/2node-host.pb.txt
 kubectl get pods -n 2node-host
 ````
 
@@ -196,7 +196,7 @@ kubectl exec -it vm-2 -n 2node-host -- ip a
 5. Destroy the two-node topology
 
 ```Shell
-./kne_cli/kne_cli delete ./examples/2node-host.pb.txt
+./kne/kne_cli/kne_cli delete ./kne/examples/2node-host.pb.txt
 kubectl get pods -n 2node-host
 ````
 
@@ -233,25 +233,19 @@ kubectl apply -f keysight/athena/operator/ixiatg-operator.yaml
 kubectl get pods -n ixiatg-op-system
 ````
 
-4. Deploy Athena Controller POD. The POD has 3 containers - Athena controller, gNMI service, gRPC service.
+4. Deploy `gosnappi` POD for running test packages from inside the KNE cluster
 
-[//]: # (TODO why are we using default namespace?)
-
-[//]: # (TODO Ingress is only needed if test has to be run from outside the cluster. The loadbalancer has to be configured accordingly. The ingress will open the trafic from outside at 443. Both athena controller and gnmi server could be reached via 443.)
-
-```Shell
-kubectl apply -f keysight/athena/controller/athena.yaml
-kubectl get pods
+````
+kubectl apply -f kne-demo/configs/gosnappi.yaml
+watch kubectl get pods
 ````
 
-5. Deploy a `test-client` POD for running test packages from inside the KNE cluster
+  Copy Athena sample tests and test utilities to that container
 
-```Shell
-kubectl apply -f kne-demo/configs/test-client.yaml
-kubectl get pods
 ````
-
-[//]: # (TODO GAP test-client should come with otgclient.go and utils.go)
+kubectl cp keysight/athena/sample-tests gosnappi:/go/
+kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.6.1"
+````
 
 ## Run sample tests in KNE with Athena
 

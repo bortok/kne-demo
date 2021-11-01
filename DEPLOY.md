@@ -63,7 +63,7 @@ cd ../..
 
 In this guide we support the following Kubernetes deployment options for running KNE. Please deploy a cluster using one of these methods and then return to the next step of this guide:
 
-* [Single-machine KIND deployment](#kind_cluster_deployment)
+* [Single-machine KIND deployment](#kind-cluster-deployment)
 * [kOps-managed cluster in Google Cloud](DEPLOY-kOps.md)
 
 ### KIND cluster deployment

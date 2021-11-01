@@ -39,7 +39,7 @@ watch kubectl get pods -n ixia-c
 
   Once all PODs are running, terminate via ^C.
 
-2. Run non-raw traffic and BGPv4 metric test
+2. Run test BGP test package with IPv4 and IPv6 routes and traffic flows
 
 ```Shell
 kubectl exec -it gosnappi -- /bin/bash -c 'cd sample-tests/tests; go test -run=TestPacketForwardBgpV4_V4V6Flows -tags=arista -v'

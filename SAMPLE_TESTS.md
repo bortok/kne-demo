@@ -7,28 +7,21 @@
 ```Shell
 ./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-b2b_config.txt
 ./kne/kne_cli/kne_cli show kne-demo/topologies/kne_ixia-b2b_config.txt
-kubectl get pods -n ixia-c-b2b
+watch kubectl get pods -n ixia-c-b2b
 ````
 
 2. Copy and run a test package. This package would execute one BGPv4 test
 
 ```Shell
-kubectl exec -it gosnappi -- /bin/bash -c "rm -rf /go/sample-tests/tests/*"
-kubectl cp keysight/athena/sample-tests/tests/init.go gosnappi:/go/sample-tests/tests/
-kubectl cp kne-demo/kne-demo-tests/tests/b2b_opts.json gosnappi:/go/sample-tests/tests/opts.json
-kubectl cp kne-demo/kne-demo-tests/tests/b2b_ebgpv4_routes_gosnappi_test.go gosnappi:/go/sample-tests/tests/
-kubectl exec -it gosnappi -- /bin/bash
-cd /go/sample-tests/tests
-go test -run=TestB2BEbgpv4RoutesGosnappi -v
+kubectl cp kne-demo/kne-demo-tests/b2b-tests gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/b2b-tests; go test -run=TestB2BEbgpv4RoutesGosnappi -v"
 ````
-
-[//]: # (TODO GAP utils.go has code specific to a topology)
 
 4. Destroy the Ixia_TG + Arista topology once the testing is over
 
 ```Shell
 ./kne/kne_cli/kne_cli delete kne-demo/topologies/kne_ixia-b2b_config.txt
-kubectl get pods -n athena-dataplane
+kubectl get pods -n ixia-c-b2b
 ````
 
 ## Arista dataplane test with Ixia Traffic Generator (Athena) - version with VLANs

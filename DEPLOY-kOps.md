@@ -59,22 +59,9 @@ gsutil mb -p kt-nas-demo -l us-west1 gs://kne-demo-bucket-${USER}
 
 [//]: # (TODO this is somehow broken - once cluster is created, API can't be accessed. No problem with manually created storage bucket)
 
-6. Permit healthchecks
-
-```Shell
-gcloud compute firewall-rules create kne-demo-allow-health-checks \
-    --network=kne-demo \
-    --action=ALLOW \
-    --direction=INGRESS \
-    --source-ranges=35.191.0.0/16,130.211.0.0/22,209.85.152.0/22,209.85.204.0/22 \
-    --rules=tcp
-````
-
-[//]: # (TODO remove H/C rules since kops is not using then)
-
 ## Deploy Kubernetes Cluster for KNE
 
-7. Create a K8s cluster using kOps
+1. Create a K8s cluster using kOps
 
 ```Shell
 export KOPS_STATE_STORE=gs://kne-demo-bucket-${USER}
@@ -92,14 +79,14 @@ sleep 300
 kops validate cluster $CLUSTER --wait 10m
 ````
 
-8. Add Meshnet CNI to K8s cluster and validate `meshnet` namespace is present in the cluster
+2. Add Meshnet CNI to K8s cluster and validate `meshnet` namespace is present in the cluster
 
 ```Shell
 kustomize build ./kne/manifests/meshnet/base | kubectl apply -f -
 kubectl get pods -n meshnet
 ````
 
-9. To make kOps environment persistent accross multiple shell sesssions, set the following env variables in `$HOME/.bash_profile`:
+3. To make kOps environment persistent accross multiple shell sesssions, set the following env variables in `$HOME/.bash_profile`:
 
 ```Shell
 cat >> $HOME/.bash_profile << EOF

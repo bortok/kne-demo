@@ -17,7 +17,7 @@ This deployment of [KNE](https://github.com/google/kne) would be using Google Cl
 1. A Google account with Google Cloud access
 2. Your Google account should be granted access to Keysight Athena repository at https://source.cloud.google.com/kt-nts-athena-dev/keysight/ 
 
-[//]: # ((TODO what is a proper way to request access to the repo?)
+[//]: # (TODO what is a proper way to request access to the repo?)
 
 3. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs) and authenticate via
 

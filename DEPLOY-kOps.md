@@ -8,7 +8,7 @@
 gcloud auth application-default login
 ````
 
-2. Install [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
+2. Install [Kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/binaries/)
 3. Install [kOps](https://kops.sigs.k8s.io/getting_started/install/)
 
 ## Adopting `gcloud` command syntax to your environment

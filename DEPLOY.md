@@ -49,15 +49,14 @@ gcloud auth application-default login
 
 ```Shell
 git clone https://github.com/google/kne.git
-cd kne
 ````
 
 2. Compile KNE
 
 ```Shell
-cd kne_cli
+cd kne/kne_cli
 go build 
-cd ..
+cd ../..
 ````
 
 ## Adopting command syntax to your environment
@@ -233,25 +232,12 @@ kubectl apply -f keysight/athena/operator/ixiatg-operator.yaml
 kubectl get pods -n ixiatg-op-system
 ````
 
-4. Deploy Athena Controller POD. The POD has 3 containers - Athena controller, gNMI service, gRPC service.
-
-[//]: # (TODO why are we using default namespace?)
-
-[//]: # (TODO Ingress is only needed if test has to be run from outside the cluster. The loadbalancer has to be configured accordingly. The ingress will open the trafic from outside at 443. Both athena controller and gnmi server could be reached via 443.)
-
-```Shell
-kubectl apply -f keysight/athena/controller/athena.yaml
-kubectl get pods
-````
-
-5. Deploy a `test-client` POD for running test packages from inside the KNE cluster
+4. Deploy a `test-client` POD for running test packages from inside the KNE cluster
 
 ```Shell
 kubectl apply -f kne-demo/configs/test-client.yaml
-kubectl get pods
+kubectl get pods -n ixiatg-op-system
 ````
-
-[//]: # (TODO GAP test-client should come with otgclient.go and utils.go)
 
 ## Run sample tests in KNE with Athena
 

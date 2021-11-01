@@ -1,10 +1,8 @@
-name: "athena-dataplane"
+name: "ixia-c"
 nodes: {
-    name: "athena-traffic-engine1"
+    name: "ixia-c-port1"
     type: IXIA_TG
-    config: {
-        image: "us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/ixia-c-traffic-engine:1.4.0.3,us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/ixia-c-protocol-engine:1.00.0.37"
-    }
+    version: "0.0.1-2185"
     services: {
         key: 5555
         value: {
@@ -24,7 +22,10 @@ nodes: {
     name: "arista1"
     type: ARISTA_CEOS
     config: {
-    	image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+      image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+      config_path: "/mnt/flash"
+      config_file: "startup-config" 
+      file: "./kne-demo/topologies/enable_ssh_arista_config.txt"
     }
     services:{
         key: 22
@@ -38,7 +39,10 @@ nodes: {
     name: "arista2"
     type: ARISTA_CEOS
     config: {
-    	image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+      image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+      config_path: "/mnt/flash"
+      config_file: "startup-config" 
+      file: "./kne-demo/topologies/enable_ssh_arista_config.txt"
     }
     services:{
         key: 22
@@ -49,11 +53,9 @@ nodes: {
     }
 }
 nodes: {
-    name: "athena-traffic-engine2"
+    name: "ixia-c-port2"
     type: IXIA_TG
-    config: {
-        image: "us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/ixia-c-traffic-engine:1.4.0.3,us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/ixia-c-protocol-engine:1.00.0.37"
-    }
+    version: "0.0.1-2185"
     services: {
         key: 5555
         value: {
@@ -70,11 +72,9 @@ nodes: {
     }
 }
 nodes: {
-    name: "athena-traffic-engine3"
+    name: "ixia-c-port3"
     type: IXIA_TG
-    config: {
-        image: "us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/ixia-c-traffic-engine:1.4.0.3,us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/ixia-c-protocol-engine:1.00.0.37"
-    }
+    version: "0.0.1-2185"
     services: {
         key: 5555
         value: {
@@ -91,7 +91,7 @@ nodes: {
     }
 }
 links: {
-    a_node: "athena-traffic-engine1"
+    a_node: "ixia-c-port1"
     a_int: "eth1"
     z_node: "arista1"
     z_int: "eth1"
@@ -105,12 +105,12 @@ links: {
 links: {
     a_node: "arista2"
     a_int: "eth2"
-    z_node: "athena-traffic-engine2"
+    z_node: "ixia-c-port2"
     z_int: "eth1"
 }
 links: {
     a_node: "arista2"
     a_int: "eth3"
-    z_node: "athena-traffic-engine3"
+    z_node: "ixia-c-port3"
     z_int: "eth1"
 }

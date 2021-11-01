@@ -1,11 +1,11 @@
 {
   "ports": [
     {
-      "location": "service-athena-traffic-engine1.athena-dataplane.svc.cluster.local:5555+service-athena-traffic-engine1.athena-dataplane.svc.cluster.local:50071",
+      "location": "service-athena-traffic-engine1.ixia-c-b2b.svc.cluster.local:5555+service-athena-traffic-engine1.ixia-c-b2b.svc.cluster.local:50071",
       "name": "p1"
     },
     {
-      "location": "service-athena-traffic-engine2.athena-dataplane.svc.cluster.local:5555+service-athena-traffic-engine2.athena-dataplane.svc.cluster.local:50071",
+      "location": "service-athena-traffic-engine2.ixia-c-b2b.svc.cluster.local:5555+service-athena-traffic-engine2.ixia-c-b2b.svc.cluster.local:50071",
       "name": "p2"
     }
   ],

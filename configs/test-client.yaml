@@ -4,11 +4,11 @@ metadata:
   name: test-client
   labels:
     app: test-client
-  namespace: default
+  namespace: ixiatg-op-system
 spec:
   containers:
   - name: test-client
-    image: us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/athena/test-client:v1
+    image: us-central1-docker.pkg.dev/kt-nts-athena-dev/keysight/ixia-c-test-client:0.0.1-900
     imagePullPolicy: IfNotPresent
     command: ["tail"]
     args: ["-f", "/dev/null"]

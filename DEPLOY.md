@@ -1,7 +1,7 @@
-# KNE and Athena Deployment
+# KNE and Ixia-C Deployment
 
 ## Overview
-This deployment of [KNE](https://github.com/google/kne) would be using Google Cloud infrastructure with a custom Kubernetes cluster installed as part of the setup. This document is divided into following sections:
+This document is divided into following sections:
 
 * [Prerequisites](#prerequisites)
 * [Install KNE Command Line Tool](#install-kne-command-line-tool)
@@ -167,7 +167,7 @@ kubectl cp keysight/athena/sample-tests gosnappi:/go/
 kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.6.1"
 ````
 
-## [Run sample tests in KNE with Athena](SAMPLE_TESTS.md)
+## [Run sample tests in KNE with Ixia-C](SAMPLE_TESTS.md)
 
 ## Destroy KNE cluster
 

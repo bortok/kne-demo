@@ -26,19 +26,17 @@ kubectl get pods -n ixia-c-b2b
 
 ## Ixia-c Traffic Generator Single DUT BGPv4 test
 
-0. This test topology has a single DUT and two IXIA_TG ports surrounding it. The test runs eBGPv4 protocol
+1. This test topology has a single DUT and two IXIA_TG ports surrounding it. The test runs eBGPv4 protocol
 
 ````
-                                                
       ate1 <---------> dut <---------> ate2     
      IXIA_TG       ARISTA_CEOS        IXIA_TG   
      1.1.1.2    1.1.1.1  2.2.2.1      2.2.2.2   
      AS2222          AS1111           AS3333    
-                                                
 ````
 
 
-1. Create KNE topology with a single DUT and two Ixia_TG nodes
+2. Create KNE topology with a single DUT and two Ixia_TG nodes
 
 ```Shell
 ./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-dut_config.txt
@@ -46,7 +44,7 @@ kubectl get pods -n ixia-c-b2b
 watch kubectl get pods -n ixia-c-dut
 ````
 
-2. Copy and run a test package. This package would execute one BGPv4 test
+3. Copy and run a test package. This package would execute one BGPv4 test
 
 ```Shell
 kubectl cp kne-demo/kne-demo-tests/dut-tests gosnappi:/go/sample-tests/

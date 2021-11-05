@@ -1,0 +1,14 @@
+{
+    "http_server": "ixia-c-service.ixia-c-dut.svc.cluster.local:443",
+    "gnmi_server": "gnmi-service.ixia-c-dut.svc.cluster.local:50051",
+    "grpc_server": "grpc-service.ixia-c-dut.svc.cluster.local:40051",
+    "ixia_c_ports": [
+        "service-ate1.ixia-c-dut.svc.cluster.local:5555+service-ate1.ixia-c-dut.svc.cluster.local:50071",
+        "service-ate2.ixia-c-dut.svc.cluster.local:5555+service-ate2.ixia-c-dut.svc.cluster.local:50071"
+    ],
+    "dut_ports": [
+    ],
+    "http_transport": false,
+    "debug": false,
+    "clear_screen_on_stats": true
+}

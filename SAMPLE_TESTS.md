@@ -26,6 +26,18 @@ kubectl get pods -n ixia-c-b2b
 
 ## Ixia-c Traffic Generator Single DUT BGPv4 test
 
+0. This test topology has a single DUT and two IXIA_TG ports surrounding it. The test runs eBGPv4 protocol
+
+````
+                                                
+      ate1 <---------> dut <---------> ate2     
+     IXIA_TG       ARISTA_CEOS        IXIA_TG   
+     1.1.1.2    1.1.1.1  2.2.2.1      2.2.2.2   
+     AS2222          AS1111           AS3333    
+                                                
+````
+
+
 1. Create KNE topology with a single DUT and two Ixia_TG nodes
 
 ```Shell

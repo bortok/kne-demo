@@ -4,6 +4,7 @@ package tests
 
 import (
 	"keysight/athena/tests/pkg/api"
+	"log"
 	"testing"
 
 	"github.com/open-traffic-generator/snappi/gosnappi"
@@ -23,6 +24,18 @@ func TestDUTEbgpv4RoutesGosnappi(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	log.Println("Logging into DUT ...")
+	dut, err := api.NewSshClient(opts, opts.DutPorts()[0], "admin")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer dut.Close()
+
+	if _, err := dut.PushDutConfigFile("./set_arista_ebgpv4.txt"); err != nil {
+		t.Fatal(err)
+	}
+	defer dut.PushDutConfigFile("./unset_arista_ebgpv4.txt")
 
 	if err := client.SetConfig(config); err != nil {
 		t.Fatal(err)
@@ -169,12 +182,12 @@ func Bgpv4RoutesConfig(client *api.ApiClient) gosnappi.Config {
 		Ipv4Addresses().
 		Add().
 		SetName("p2d1ipv4").
-		SetAddress("1.1.1.1").
-		SetGateway("1.1.1.2").
+		SetAddress("2.2.2.2").
+		SetGateway("2.2.2.1").
 		SetPrefix(32)
 
 	d2Bgp := d2.Bgp().
-		SetRouterId("1.1.1.1")
+		SetRouterId("2.2.2.2")
 
 	d2BgpIpv4Interface1 := d2Bgp.
 		Ipv4Interfaces().Add().
@@ -183,15 +196,15 @@ func Bgpv4RoutesConfig(client *api.ApiClient) gosnappi.Config {
 	d2BgpIpv4Interface1Peer1 := d2BgpIpv4Interface1.
 		Peers().
 		Add().
-		SetAsNumber(1111).
+		SetAsNumber(3333).
 		SetAsType(gosnappi.BgpV4PeerAsType.EBGP).
-		SetPeerAddress("1.1.1.2").
+		SetPeerAddress("2.2.2.1").
 		SetName("p2d1bgpv4")
 
 	d2BgpIpv4Interface1Peer1V4Route1 := d2BgpIpv4Interface1Peer1.
 		V4Routes().
 		Add().
-		SetNextHopIpv4Address("1.1.1.2").
+		SetNextHopIpv4Address("2.2.2.2").
 		SetName("p2d1peer1rrv4").
 		SetNextHopAddressType(gosnappi.BgpV4RouteRangeNextHopAddressType.IPV4).
 		SetNextHopMode(gosnappi.BgpV4RouteRangeNextHopMode.MANUAL)

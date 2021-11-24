@@ -6,8 +6,7 @@
 
 ```Shell
 ./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-b2b_config.txt
-./kne/kne_cli/kne_cli show kne-demo/topologies/kne_ixia-b2b_config.txt
-watch kubectl get pods -n ixia-c-b2b
+kubectl get pods -n ixia-c-b2b
 ````
 
 2. Copy and run a test package. This package would execute one BGPv4 test
@@ -40,8 +39,7 @@ kubectl get pods -n ixia-c-b2b
 
 ```Shell
 ./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-dut_config.txt
-./kne/kne_cli/kne_cli show kne-demo/topologies/kne_ixia-dut_config.txt
-watch kubectl get pods -n ixia-c-dut
+kubectl get pods -n ixia-c-dut
 ````
 
 3. Copy and run a test package. This package would execute one BGPv4 test
@@ -65,13 +63,10 @@ kubectl get pods -n ixia-c-dut
 [//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
 
 ```Shell
-cd keysight/athena/kne/
-../../../kne/kne_cli/kne_cli create kne_config.txt
-../../../kne/kne_cli/kne_cli show kne_config.txt
-watch kubectl get pods -n ixia-c
+cd kne-demo/topologies
+../../kne/kne_cli/kne_cli create kne_ixia3_arista2_config.txt
+kubectl get pods -n ixia-c-2node
 ````
-
-  Once all PODs are running, terminate via ^C.
 
 2. Run test BGP test package with IPv4 and IPv6 routes and traffic flows
 
@@ -82,8 +77,8 @@ kubectl exec -it gosnappi -- /bin/bash -c 'cd sample-tests/tests; go test -run=T
 6. Destroy the Ixia_TG + Arista topology once the testing is over
 
 ```Shell
-../../../kne/kne_cli/kne_cli delete kne_config.txt
-kubectl get pods -n ixia-c
+../../kne/kne_cli/kne_cli delete kne_ixia3_arista2_config.txt
+kubectl get pods -n ixia-c-2node
 cd ../../../
 ````
 

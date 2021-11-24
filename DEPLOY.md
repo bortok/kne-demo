@@ -164,7 +164,7 @@ watch kubectl get pods
 
 ````
 kubectl cp keysight/athena/sample-tests gosnappi:/go/
-kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.6.1"
+kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.6.5"
 ````
 
 ## [Run sample tests in KNE with Ixia-C](SAMPLE_TESTS.md)

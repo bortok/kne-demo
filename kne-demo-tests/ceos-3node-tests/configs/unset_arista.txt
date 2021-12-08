@@ -1,0 +1,16 @@
+interface Ethernet1
+   no ipv6 address
+   no ip address
+!
+interface Ethernet2
+   no ipv6 address
+   no ip address
+!
+interface Ethernet3
+   no ipv6 address
+   no ip address
+!
+no router bgp
+no route-map IPV6_NEXT_HOP
+!
+end

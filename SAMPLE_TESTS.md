@@ -82,3 +82,32 @@ kubectl get pods -n ixia-c-2node
 cd ../../../
 ````
 
+##  Ixia-c 3-node Traffic Generator tests for 3-node Arista setup
+
+1. Create Ixia_TG + Arista topology
+
+[//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
+
+```Shell
+cd kne-demo/topologies
+../../kne/kne_cli/kne_cli create kne_ixia-c-ceos-3node_config.txt
+kubectl get pods -n ixia-c-ceos-3node
+cd ../..
+````
+
+2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
+
+```Shell
+kubectl cp kne-demo/kne-demo-tests/ceos-3node-tests gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/ceos-3node-tests; go test -run=Test3DUTPacketForwardBgpV4_V4V6Flows -v"
+````
+
+3. Destroy the Ixia_TG + Arista topology once the testing is over
+
+```Shell
+cd kne-demo/topologies
+../../kne/kne_cli/kne_cli delete kne_ixia-c-ceos-3node_config.txt
+kubectl get pods -n ixia-c-ceos-3node
+cd ../..
+````
+

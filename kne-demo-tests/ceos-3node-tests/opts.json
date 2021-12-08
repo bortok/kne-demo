@@ -1,0 +1,18 @@
+{
+    "http_server": "ixia-c-service.ixia-c-ceos-3node.svc.cluster.local:443",
+    "gnmi_server": "gnmi-service.ixia-c-ceos-3node.svc.cluster.local:50051",
+    "grpc_server": "grpc-service.ixia-c-ceos-3node.svc.cluster.local:40051",
+    "ixia_c_ports": [
+        "service-otg1.ixia-c-ceos-3node.svc.cluster.local:5555+service-otg1.ixia-c-ceos-3node.svc.cluster.local:50071",
+        "service-otg2.ixia-c-ceos-3node.svc.cluster.local:5555+service-otg2.ixia-c-ceos-3node.svc.cluster.local:50071",
+        "service-otg3.ixia-c-ceos-3node.svc.cluster.local:5555+service-otg3.ixia-c-ceos-3node.svc.cluster.local:50071"
+    ],
+    "dut_ports": [
+      "service-arista1.ixia-c-ceos-3node.svc.cluster.local:22",
+      "service-arista2.ixia-c-ceos-3node.svc.cluster.local:22",
+      "service-arista3.ixia-c-ceos-3node.svc.cluster.local:22"
+    ],
+    "http_transport": false,
+    "debug": false,
+    "clear_screen_on_stats": true
+}

@@ -4,6 +4,7 @@ metadata:
   name: modrule-ixia-c-add-lldpd
 spec:
   type: Patch
+  targetNamespaceRegex: "ixia-c-*"
   match:
     - select: '$.kind'
       matchValue: Pod

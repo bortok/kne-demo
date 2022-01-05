@@ -21,4 +21,3 @@ spec:
         name: ubuntu-host
         image: ubuntu-host:latest
         imagePullPolicy: IfNotPresent
-        command: ["/start.sh", ""]

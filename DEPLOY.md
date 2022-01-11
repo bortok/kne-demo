@@ -1,4 +1,4 @@
-# KNE and Ixia-C Deployment
+# KNE and Ixia-c Deployment
 
 ## Overview
 This document is divided into following sections:
@@ -122,7 +122,7 @@ kubectl get pods -n 2node-host
 
 This concludes KNE validation steps. As part of the validation, we confirmed Meshnet CNI "wire" up/down operations between two nodes.
 
-## Initialize Ixia Traffic Generator (Athena) subsystem
+## Initialize Ixia-c Traffic Generator subsystem
 
 1. Clone `keysight` repository from Ixia Athena development project
 
@@ -167,7 +167,7 @@ kubectl cp keysight/athena/sample-tests gosnappi:/go/
 kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.6.5"
 ````
 
-## [Run sample tests in KNE with Ixia-C](SAMPLE_TESTS.md)
+## [Run sample tests in KNE with Ixia-c](SAMPLE_TESTS.md)
 
 ## Destroy KNE cluster
 

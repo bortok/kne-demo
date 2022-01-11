@@ -1,0 +1,26 @@
+---
+
+arista1:
+    hostname: service-arista1
+    site: ixia-c-ceos-3node
+    groups:
+        - ceos
+    data:
+        role: router
+
+arista2:
+    hostname: service-arista2
+    site: ixia-c-ceos-3node
+    groups:
+        - ceos
+    data:
+        role: router
+
+arista3:
+    hostname: service-arista3
+    site: ixia-c-ceos-3node
+    groups:
+        - ceos
+    data:
+        role: router
+

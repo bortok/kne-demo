@@ -185,8 +185,9 @@ kops delete cluster $USER.k8s.local --yes
 cd kne
 git fetch origin
 git pull origin
+#git checkout hines
 cd kne_cli
-go build 
+go build
 ````
 
 2. Bring Athena local copy to the latest

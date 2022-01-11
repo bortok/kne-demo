@@ -1,0 +1,40 @@
+interface Ethernet1
+   no switchport
+   ip address 2.2.2.1/24
+   ipv6 address 0:2:2:2::1/64
+!
+interface Ethernet2
+   no switchport
+   ip address 12.12.12.2/24
+   ipv6 address 0:12:12:12::2/64
+!
+interface Ethernet3
+   no switchport
+   ip address 23.23.23.1/24
+   ipv6 address 0:23:23:23::1/64
+!
+ip routing
+!
+ipv6 unicast-routing
+!
+route-map IPV6_NEXT_HOP permit 10
+set ipv6 next-hop  0:2:2:2::1
+router bgp 4000
+   router-id 2.2.2.1
+   neighbor 2.2.2.2 remote-as 2222
+   neighbor 2.2.2.2 route-map IPV6_NEXT_HOP out
+   neighbor 0:2:2:2::2 remote-as 2222
+   neighbor 12.12.12.1 remote-as 3000
+   neighbor 0:12:12:12::1 remote-as 3000
+   neighbor 23.23.23.2 remote-as 5000
+   neighbor 0:23:23:23::2 remote-as 5000
+   !
+   address-family ipv6
+      neighbor 2.2.2.2 activate
+      neighbor 0:2:2:2::2 activate
+      neighbor 12.12.12.1 activate
+      neighbor 0:12:12:12::1 activate
+      neighbor 23.23.23.2 activate
+      neighbor 0:23:23:23::2 activate
+!
+end

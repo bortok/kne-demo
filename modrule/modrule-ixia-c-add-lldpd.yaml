@@ -1,0 +1,23 @@
+apiVersion: api.kubemod.io/v1beta1
+kind: ModRule
+metadata:
+  name: modrule-ixia-c-add-lldpd
+spec:
+  type: Patch
+  targetNamespaceRegex: "ixia-c-*"
+  match:
+    - select: '$.kind'
+      matchValue: Pod
+    - select: '$.metadata.labels.app'
+      matchRegex: 'otg*'
+    - select: '$.spec.containers[*].name'
+      matchValue: 'ubuntu-host'
+      negate: true
+  patch:
+    - op: add
+      # Use -1 to insert the new container at the end of the containers list.
+      path: /spec/containers/-1
+      value: |-
+        name: ubuntu-host
+        image: gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest
+        imagePullPolicy: IfNotPresent

@@ -1,0 +1,5 @@
+---
+ceos:
+    platform: 'eos'
+    username: nornir
+    password: nornir

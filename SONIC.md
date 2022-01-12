@@ -14,8 +14,6 @@ multipass version
 1. Use https://github.com/antongisli/sonic-builder to automate build environment. Create a build VM
 
 ```Shell
-cd athena-mac
-export BASEDIR=`pwd`
 git clone https://github.com/antongisli/sonic-builder.git
 multipass launch 20.04 -n sonic-builder -c4 -m16G -d300G --cloud-init sonic-builder/sonic-cloud-init.yaml
 ````

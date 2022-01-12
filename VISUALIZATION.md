@@ -2,7 +2,7 @@
 
 ## Overview
 
-For topology visualization, we're going to use Cisco NextUI engine and a patched version of [`devnet_marathon_endgame`](https://idebugall.github.io/visualize-lldp/) script to create live network inventory based on LLDP information. Since Ixia-c doesn't support LLDP, a sidecar container with `lldpd` would be automatically injected into Ixia-c PODs. In order to automatically inject sidecar images, Ixia-c node names have to start with `otg` prefix.
+For topology visualization, we're going to use [Cisco NextUI](https://developer.cisco.com/site/neXt/) engine and a patched version of [`devnet_marathon_endgame`](https://idebugall.github.io/visualize-lldp/) script to create live network inventory based on LLDP information. Since Ixia-c doesn't support LLDP, a sidecar container with `lldpd` would be automatically injected into Ixia-c PODs. In order to automatically inject sidecar images, Ixia-c node names have to start with `otg` prefix.
 
 By following these steps, you should be able to generate a topology visualization similar to this image:
 
@@ -10,12 +10,12 @@ By following these steps, you should be able to generate a topology visualizatio
 
 ## Prerequisites
 
-* KNE environenment [deployed](DEPLOY.md) on any supported version of K8s
-* Ixia-c subsystem [initialized](DEPLOY.md#initialize-ixia-traffic-generator-athena-subsystem) on top of KNE environment
-* Python 3
-* PIP
-* virtualenv
-* In terminal, navigate to a base folder, under which you already installed Ixia-c and KNE components. Remember the path in `BASE_DIR` variable
+- [ ] KNE environenment [deployed](DEPLOY.md) on any supported version of K8s
+- [ ] Ixia-c subsystem [initialized](DEPLOY.md#initialize-ixia-traffic-generator-athena-subsystem) on top of KNE environment
+- [ ] Python 3
+- [ ] PIP
+- [ ] virtualenv
+- [ ] In terminal, navigate to a base folder, under which you already installed Ixia-c and KNE components. Remember the path in `BASE_DIR` variable
 
 ```Shell
 export BASE_DIR=`pwd`

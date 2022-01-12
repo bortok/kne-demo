@@ -2,7 +2,11 @@
 
 ## Overview
 
-For topology visualization, we're going to use Cisco NextUI engine and `devnet_marathon_endgame` script to create live network inventory based on LLDP information. Since Ixia-c doesn't support LLDP, a sidecar container with `lldpd` would be automatically injected into Ixia-c PODs. In order to automatically inject sidecar images, Ixia-c node names have to start with `otg` prefix.
+For topology visualization, we're going to use Cisco NextUI engine and a patched version of [`devnet_marathon_endgame`](https://idebugall.github.io/visualize-lldp/) script to create live network inventory based on LLDP information. Since Ixia-c doesn't support LLDP, a sidecar container with `lldpd` would be automatically injected into Ixia-c PODs. In order to automatically inject sidecar images, Ixia-c node names have to start with `otg` prefix.
+
+By following these steps, you should be able to generate a topology visualization similar to this image:
+
+![Visualized 3 node topology](images/nextui_3node.png)
 
 ## Prerequisites
 
@@ -48,7 +52,7 @@ ln -s $BASE_DIR/kne-demo/nornir/nornir_ixia-c-ceos-3node_inventory.yml hosts_dev
 
 ## Initialize automatic sidecar injection for LLDP support. Run these steps only once
 
-0. If using KIND to run KNE: pull `ubuntu-host` image and load it into KNE cluster
+1. If using KIND to run KNE: pull `ubuntu-host` image and load it into KNE cluster
 
 ```Shell
 docker pull gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest
@@ -64,7 +68,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubemod/kubemod/v0.13.0/bundl
 
 2. Label remaining namespaces where automatic sidecar injection should never occur
 
-````
+```Shell
 kubectl label namespace ixiatg-op-system admission.kubemod.io/ignore=true --overwrite
 kubectl label namespace kubemod-system admission.kubemod.io/ignore=true --overwrite
 kubectl label namespace local-path-storage admission.kubemod.io/ignore=true --overwrite
@@ -74,20 +78,20 @@ kubectl label namespace metallb-system admission.kubemod.io/ignore=true --overwr
 
 3. Apply a rule for automatic injection of `ubuntu-host` sidecar container with `lldpd` daemon
 
-````
+```Shell
 kubectl apply -f $BASE_DIR/kne-demo/modrule/modrule-ixia-c-add-lldpd.yaml -n kubemod-system
 ````
 
 To validate or inspect the modrule, use
 
-````
+```Shell
 kubectl get modrule -n kubemod-system
 kubectl describe modrule modrule-ixia-c-add-lldpd -n kubemod-system
 ````
 
 ## Create and visualize a topology
 
-These steps could be repeated, including use defferent topology files.
+These steps could be repeated, including use of a different topology.
 
 1. Create a topology
 
@@ -100,7 +104,7 @@ kubectl get pods -n ixia-c-ceos-3node
 2. Explore LLDP neighbors from Arista devices
 
 ```Shell
-kubectl exec -it arista1 -c arista1 -n ixia-c-ceos-3node -- Cli
+kubectl exec -it arista1 -n ixia-c-ceos-3node -- Cli
 show lldp neighbors
 exit
 

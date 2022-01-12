@@ -10,12 +10,12 @@ By following these steps, you should be able to generate a topology visualizatio
 
 ## Prerequisites
 
-- [ ] KNE environenment [deployed](DEPLOY.md) on any supported version of K8s
-- [ ] Ixia-c subsystem [initialized](DEPLOY.md#initialize-ixia-traffic-generator-athena-subsystem) on top of KNE environment
-- [ ] Python 3
-- [ ] PIP
-- [ ] virtualenv
-- [ ] In terminal, navigate to a base folder, under which you already installed Ixia-c and KNE components. Remember the path in `BASE_DIR` variable
+* KNE environenment [deployed](DEPLOY.md) on any supported version of K8s
+* Ixia-c subsystem [initialized](DEPLOY.md#initialize-ixia-traffic-generator-athena-subsystem) on top of KNE environment
+* Python 3
+* PIP
+* virtualenv
+* In terminal, navigate to a base folder, under which you already installed Ixia-c and KNE components. Remember the path in `BASE_DIR` variable
 
 ```Shell
 export BASE_DIR=`pwd`
@@ -59,14 +59,14 @@ docker pull gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest
 kind load docker-image gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest --name=kne
 ````
 
-1. Initialize [Kubemod](https://github.com/kubemod/kubemod)
+2. Initialize [Kubemod](https://github.com/kubemod/kubemod)
 
 ```Shell
 kubectl label namespace kube-system admission.kubemod.io/ignore=true --overwrite
 kubectl apply -f https://raw.githubusercontent.com/kubemod/kubemod/v0.13.0/bundle.yaml
 ````
 
-2. Label remaining namespaces where automatic sidecar injection should never occur
+3. Label remaining namespaces where automatic sidecar injection should never occur
 
 ```Shell
 kubectl label namespace ixiatg-op-system admission.kubemod.io/ignore=true --overwrite
@@ -76,7 +76,7 @@ kubectl label namespace meshnet admission.kubemod.io/ignore=true --overwrite
 kubectl label namespace metallb-system admission.kubemod.io/ignore=true --overwrite
 ````
 
-3. Apply a rule for automatic injection of `ubuntu-host` sidecar container with `lldpd` daemon
+4. Apply a rule for automatic injection of `ubuntu-host` sidecar container with `lldpd` daemon
 
 ```Shell
 kubectl apply -f $BASE_DIR/kne-demo/modrule/modrule-ixia-c-add-lldpd.yaml -n kubemod-system

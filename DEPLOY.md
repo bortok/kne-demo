@@ -74,12 +74,21 @@ In this guide we support the following Kubernetes deployment options for running
 
 ```Shell
 GO111MODULE="on" go install sigs.k8s.io/kind@latest
+cat >> $HOME/.bashrc << EOF
+
+# Local go modules
+if [ -d "\$HOME/go/bin" ] ; then
+    PATH="\$PATH:\$HOME/go/bin"
+fi
+
+EOF
+source $HOME/.bashrc
 ````
 
 2. To deploy a KIND cluster on the same machine where KNE is installed, run
 
 ```Shell
-./kne/kne_cli deploy kne/deploy/kne/kind.yaml
+./kne/kne_cli/kne_cli deploy kne/deploy/kne/kind.yaml
 ````
 
 ## Validate KNE operations

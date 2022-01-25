@@ -41,12 +41,9 @@ interface Loopback0
 !
 interface Eth1
   no switchport
-!
-interface Eth2
-  no switchport
   ip address 192.168.1.3/31
 !
-interface Eth3
+interface Eth2
   no switchport
   ip address 192.168.1.7/31
 !

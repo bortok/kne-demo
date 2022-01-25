@@ -69,20 +69,40 @@ nodes: {
 }
 nodes: {
     name: "host1"
-    type: HOST
-    config: {
-        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
-        command: "/start.sh"
-        args: "-s"
+    type: IXIA_TG
+    version: "0.0.1-2342"
+    services: {
+        key: 5555
+        value: {
+            inside: 5555
+            outside: 0
+        }
+    }
+    services: {
+        key: 50071
+        value: {
+            inside: 50071
+            outside: 0
+        }
     }
 }
 nodes: {
     name: "host2"
-    type: HOST
-    config: {
-        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
-        command: "/start.sh"
-        args: "-s"
+    type: IXIA_TG
+    version: "0.0.1-2342"
+    services: {
+        key: 5555
+        value: {
+            inside: 5555
+            outside: 0
+        }
+    }
+    services: {
+        key: 50071
+        value: {
+            inside: 50071
+            outside: 0
+        }
     }
 }
 links: {

@@ -116,7 +116,7 @@ links: {
     z_int: "eth1"
 }
 links: {
-    a_node: "tor1-1"
+    a_node: "tor1-2"
     a_int: "eth3"
     z_node: "host2"
     z_int: "eth1"

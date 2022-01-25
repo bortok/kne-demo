@@ -1,0 +1,70 @@
+! Command: show running-config
+! device: localhost (cEOSLab, EOS-4.26.0F-21792469.4260F (engineering build))
+!
+!
+hostname tor1-1
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+agent Bfd shutdown
+agent PowerManager shutdown
+agent LedPolicy shutdown
+agent Thermostat shutdown
+agent PowerFuse shutdown
+agent StandbyCpld shutdown
+agent LicenseManager shutdown
+!
+spanning-tree mode mstp
+!
+no aaa root
+aaa authentication policy local allow-nopassword-remote-login
+!
+username admin privilege 15 role network-admin nopassword
+username nornir privilege 15 role network-admin secret 0 nornir
+!
+ip routing
+!
+! BGP Loopbacks
+ip prefix-list DC_LOCAL_SUBNET seq 10 permit 10.0.211.0/24  le 32
+! VIPs
+ip prefix-list DC_LOCAL_SUBNET seq 20 permit 10.0.1.0/24    le 32
+! POD-2-TOR hops
+ip prefix-list DC_LOCAL_SUBNET seq 30 permit 192.168.1.0/24 le 31
+!
+route-map ACCEPT_DC_LOCAL permit 10
+  match ip address access-list DC_LOCAL_SUBNET
+!
+interface Loopback0
+  ip address 10.0.211.111/32
+!
+interface Eth1
+  no switchport
+!
+interface Eth2
+  no switchport
+  ip address 192.168.1.1/31
+!
+interface Eth3
+  no switchport
+  ip address 192.168.1.5/31
+!
+router bgp 65111
+  router-id 10.0.211.111
+  no bgp default ipv4-unicast
+  timers bgp 3 9
+  maximum-paths 64
+  neighbor ISL peer group
+  neighbor ISL remote-as 65511
+  neighbor 192.168.1.0 peer group ISL
+  neighbor 192.168.1.2 peer group ISL
+  redistribute connected
+  !
+  address-family ipv4
+    neighbor ISL activate
+!
+management api http-commands
+   no shutdown
+!
+end

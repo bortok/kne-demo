@@ -111,3 +111,38 @@ kubectl get pods -n ixia-c-ceos-3node
 cd ../..
 ````
 
+##  Ixia-c 4-node Clos POD
+
+1. Create Ixia_TG + Arista topology
+
+[//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
+
+```Shell
+cd kne-demo/topologies/clos-4node-pod
+kne_cli create kne_clos-4node-pod-ceos.txt
+kubectl get pods -n clos-4node-pod-ceos
+kubectl exec -it pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli
+kubectl exec -it tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli
+cd ../../..
+````
+
+
+kne_cli topology push kne_clos-4node-pod-ceos.txt pod1-1 pod1-1_eos_config.txt
+kne_cli topology push kne_clos-4node-pod-ceos.txt tor1-1 tor1-1_eos_config.txt
+
+2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
+
+```Shell
+kubectl cp kne-demo/kne-demo-tests/ceos-3node-tests gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/ceos-3node-tests; go test -run=Test3DUTPacketForwardBgpV4_V4V6Flows -v"
+````
+
+3. Destroy the Ixia_TG + Arista topology once the testing is over
+
+```Shell
+cd kne-demo/topologies
+../../kne/kne_cli/kne_cli delete kne_ixia-c-ceos-3node_config.txt
+kubectl get pods -n ixia-c-ceos-3node
+cd ../..
+````
+

@@ -1,0 +1,58 @@
+! Command: show running-config
+! device: localhost (cEOSLab, EOS-4.26.0F-21792469.4260F (engineering build))
+!
+!
+hostname pod1-2
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+agent Bfd shutdown
+agent PowerManager shutdown
+agent LedPolicy shutdown
+agent Thermostat shutdown
+agent PowerFuse shutdown
+agent StandbyCpld shutdown
+agent LicenseManager shutdown
+!
+spanning-tree mode mstp
+!
+no aaa root
+aaa authentication policy local allow-nopassword-remote-login
+!
+username admin privilege 15 role network-admin nopassword
+username nornir privilege 15 role network-admin secret 0 nornir
+!
+ip routing
+!
+interface Loopback0
+  ip address 10.0.211.12/32
+!
+interface Eth1
+  no switchport
+  ip address 192.168.1.4/31
+!
+interface Eth2
+  no switchport
+  ip address 192.168.1.6/31
+!
+router bgp 65511
+  router-id 10.0.211.12
+  no bgp default ipv4-unicast
+  timers bgp 3 9
+  maximum-paths 64
+  neighbor ISL peer group
+  neighbor 192.168.1.5 peer group ISL
+  neighbor 192.168.1.5 remote-as 65111
+  neighbor 192.168.1.7 peer group ISL
+  neighbor 192.168.1.7 remote-as 65112
+  redistribute connected
+  !
+  address-family ipv4
+    neighbor ISL activate
+!
+management api http-commands
+   no shutdown
+!
+end

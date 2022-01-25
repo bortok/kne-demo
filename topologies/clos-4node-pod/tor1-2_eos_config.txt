@@ -37,6 +37,10 @@ interface Eth2
   no switchport
   ip address 192.168.2.3/31
 !
+interface Eth3
+  no switchport
+  ip address 169.254.1.1/24
+!
 router bgp 65112
   router-id 10.0.211.112
   no bgp default ipv4-unicast

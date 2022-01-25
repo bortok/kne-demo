@@ -67,6 +67,24 @@ nodes: {
         }
     }
 }
+nodes: {
+    name: "host1"
+    type: HOST
+    config: {
+        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
+        command: "/start.sh"
+        args: "-s"
+    }
+}
+nodes: {
+    name: "host2"
+    type: HOST
+    config: {
+        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
+        command: "/start.sh"
+        args: "-s"
+    }
+}
 links: {
     a_node: "pod1-1"
     a_int: "eth1"
@@ -90,4 +108,16 @@ links: {
     a_int: "eth2"
     z_node: "tor1-2"
     z_int: "eth2"
+}
+links: {
+    a_node: "tor1-1"
+    a_int: "eth3"
+    z_node: "host1"
+    z_int: "eth1"
+}
+links: {
+    a_node: "tor1-1"
+    a_int: "eth3"
+    z_node: "host2"
+    z_int: "eth1"
 }

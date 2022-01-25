@@ -160,14 +160,6 @@ func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnapp
 		SetMultiExitDiscriminator(20).
 		SetOrigin(gosnappi.BgpRouteAdvancedOrigin.IGP)
 
-	d2BgpIpv4Interface1Peer1V6Route1 := d2BgpIpv4Interface1Peer1.
-		V6Routes().
-		Add().
-		SetNextHopIpv6Address("0:2:2:2::2").
-		SetName("p2d1peer1rrv6").
-		SetNextHopAddressType(gosnappi.BgpV6RouteRangeNextHopAddressType.IPV6).
-		SetNextHopMode(gosnappi.BgpV6RouteRangeNextHopMode.MANUAL)
-
 	// add endpoints and packet description flow 1
 	f1 := config.Flows().Items()[1]
 	f1.SetName(p1.Name() + " -> " + p2.Name() + "-IPv4").

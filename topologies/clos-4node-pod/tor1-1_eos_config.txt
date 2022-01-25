@@ -50,6 +50,7 @@ router bgp 65111
   neighbor ISL remote-as 65511
   neighbor 192.168.1.0 peer group ISL
   neighbor 192.168.2.0 peer group ISL
+  neighbor 169.254.1.11 remote-as 65001
   redistribute connected
   !
   address-family ipv4

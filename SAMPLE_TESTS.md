@@ -128,9 +128,19 @@ kubectl exec -it tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli
 cd ../../..
 ````
 
+2. Configure hosts
 
-kne_cli topology push kne_clos-4node-pod-ceos.txt pod1-1 pod1-1_eos_config.txt
-kne_cli topology push kne_clos-4node-pod-ceos.txt tor1-1 tor1-1_eos_config.txt
+````
+kubectl exec -it host1 -c host1 -n clos-4node-pod-ceos -- bash
+ip addr add 169.254.1.11/24 dev eth1
+ping 169.254.1.1 -c 2
+````
+
+````
+kubectl exec -it host2 -c host2 -n clos-4node-pod-ceos -- bash
+ip addr add 169.254.1.11/24 dev eth1
+ping 169.254.1.1 -c 2
+````
 
 2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
 

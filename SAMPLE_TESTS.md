@@ -145,8 +145,8 @@ ping 169.254.1.1 -c 2
 2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
 
 ```Shell
-kubectl cp kne-demo/kne-demo-tests/ceos-3node-tests gosnappi:/go/sample-tests/
-kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/ceos-3node-tests; go test -run=Test3DUTPacketForwardBgpV4_V4V6Flows -v"
+kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; go test -run=TestClosPodHostsPacketForwardBgpV4_V4Flows -v"
 ````
 
 3. Destroy the Ixia_TG + Arista topology once the testing is over

@@ -4,7 +4,6 @@ package tests
 
 import (
 	"keysight/athena/tests/pkg/api"
-	"log"
 	"testing"
 
 	"github.com/open-traffic-generator/snappi/gosnappi"

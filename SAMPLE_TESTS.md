@@ -122,7 +122,9 @@ cd kne-demo/topologies/clos-4node-pod
 kne_cli create kne_clos-4node-pod-ceos.txt
 kubectl get pods -n clos-4node-pod-ceos
 kubectl exec -it pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli
+kubectl exec -it pod1-2 -c pod1-2 -n clos-4node-pod-ceos -- Cli
 kubectl exec -it tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli
+kubectl exec -it tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli
 cd ../../..
 ````
 

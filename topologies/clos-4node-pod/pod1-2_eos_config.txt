@@ -31,11 +31,11 @@ interface Loopback0
 !
 interface Eth1
   no switchport
-  ip address 192.168.1.4/31
+  ip address 192.168.2.0/31
 !
 interface Eth2
   no switchport
-  ip address 192.168.1.6/31
+  ip address 192.168.2.2/31
 !
 router bgp 65511
   router-id 10.0.211.12
@@ -43,10 +43,10 @@ router bgp 65511
   timers bgp 3 9
   maximum-paths 64
   neighbor ISL peer group
-  neighbor 192.168.1.5 peer group ISL
-  neighbor 192.168.1.5 remote-as 65111
-  neighbor 192.168.1.7 peer group ISL
-  neighbor 192.168.1.7 remote-as 65112
+  neighbor 192.168.2.1 peer group ISL
+  neighbor 192.168.2.1 remote-as 65111
+  neighbor 192.168.2.3 peer group ISL
+  neighbor 192.168.2.3 remote-as 65112
   redistribute connected
   !
   address-family ipv4

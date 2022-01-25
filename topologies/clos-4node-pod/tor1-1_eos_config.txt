@@ -26,16 +26,6 @@ username nornir privilege 15 role network-admin secret 0 nornir
 !
 ip routing
 !
-! BGP Loopbacks
-ip prefix-list DC_LOCAL_SUBNET seq 10 permit 10.0.211.0/24  le 32
-! VIPs
-ip prefix-list DC_LOCAL_SUBNET seq 20 permit 10.0.1.0/24    le 32
-! POD-2-TOR hops
-ip prefix-list DC_LOCAL_SUBNET seq 30 permit 192.168.1.0/24 le 31
-!
-route-map ACCEPT_DC_LOCAL permit 10
-  match ip address access-list DC_LOCAL_SUBNET
-!
 interface Loopback0
   ip address 10.0.211.111/32
 !
@@ -45,7 +35,7 @@ interface Eth1
 !
 interface Eth2
   no switchport
-  ip address 192.168.1.5/31
+  ip address 192.168.2.1/31
 !
 router bgp 65111
   router-id 10.0.211.111
@@ -55,7 +45,7 @@ router bgp 65111
   neighbor ISL peer group
   neighbor ISL remote-as 65511
   neighbor 192.168.1.0 peer group ISL
-  neighbor 192.168.1.2 peer group ISL
+  neighbor 192.168.2.0 peer group ISL
   redistribute connected
   !
   address-family ipv4

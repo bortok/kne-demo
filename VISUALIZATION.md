@@ -104,17 +104,9 @@ kubectl get pods -n ixia-c-ceos-3node
 2. Explore LLDP neighbors from Arista devices
 
 ```Shell
-kubectl exec -it arista1 -n ixia-c-ceos-3node -- Cli
-show lldp neighbors
-exit
-
-kubectl exec -it arista2 -n ixia-c-ceos-3node -- Cli
-show lldp neighbors
-exit
-
-kubectl exec -it arista3 -n ixia-c-ceos-3node -- Cli
-show lldp neighbors
-exit
+kubectl exec arista1 -n ixia-c-ceos-3node -- Cli -c "show lldp neighbors"
+kubectl exec arista2 -n ixia-c-ceos-3node -- Cli -c "show lldp neighbors"
+kubectl exec arista3 -n ixia-c-ceos-3node -- Cli -c "show lldp neighbors"
 ````
 
 3. To inspect `ubuntu-host` sidecar, use
@@ -133,7 +125,31 @@ cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 
 Open `main.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view the topology.
 
-5. Cleanup topology
+5. Change the topology by shutting down an interface and re-run visualization
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/
+kne_cli topology push kne_ixia-c-ceos-3node_config.txt arista1 arista1_disable_eth2_config.txt
+sleep 2
+kubectl exec arista1 -n ixia-c-ceos-3node -- Cli -e -c "show interface status"
+cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR/kne-demo/topologies/
+````
+
+Open `diff_page.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view changes in the topology.
+
+6. Restore the topology and re-run visualization
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/
+kne_cli topology push kne_ixia-c-ceos-3node_config.txt arista1 arista1_enable_eth2_config.txt
+sleep 2
+kubectl exec arista1 -n ixia-c-ceos-3node -- Cli -e -c "show interface status"
+cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR/kne-demo/topologies/
+````
+
+Open `diff_page.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view changes in the topology.
+
+7. Cleanup topology
 
 ```Shell
 cd $BASE_DIR/kne-demo/topologies/
@@ -142,7 +158,7 @@ kubectl get pods -n ixia-c-ceos-3node
 cd $BASE_DIR/devnet_marathon_endgame
 rm topology.js diff_topology.js cached_topology.json
 cd $BASE_DIR
-cat /etc/hosts | grep -v "service-arista" | sudo bash -c "cat > /etc/hosts
+cat /etc/hosts | grep -v "service-arista" | sudo bash -c "cat > /etc/hosts"
 ````
 
 ## Cleanup cluster

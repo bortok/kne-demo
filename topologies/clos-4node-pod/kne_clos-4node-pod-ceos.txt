@@ -70,7 +70,7 @@ nodes: {
 nodes: {
     name: "host1"
     type: IXIA_TG
-    version: "0.0.1-2342"
+    version: "0.0.1-2543"
     services: {
         key: 5555
         value: {
@@ -89,7 +89,7 @@ nodes: {
 nodes: {
     name: "host2"
     type: IXIA_TG
-    version: "0.0.1-2342"
+    version: "0.0.1-2543"
     services: {
         key: 5555
         value: {

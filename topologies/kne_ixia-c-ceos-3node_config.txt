@@ -19,7 +19,7 @@ nodes: {
 nodes: {
     name: "otg1"
     type: IXIA_TG
-    version: "0.0.1-2342"
+    version: "0.0.1-2543"
     services: {
         key: 5555
         value: {
@@ -55,7 +55,7 @@ nodes: {
 nodes: {
     name: "otg2"
     type: IXIA_TG
-    version: "0.0.1-2342"
+    version: "0.0.1-2543"
     services: {
         key: 5555
         value: {
@@ -91,7 +91,7 @@ nodes: {
 nodes: {
     name: "otg3"
     type: IXIA_TG
-    version: "0.0.1-2342"
+    version: "0.0.1-2543"
     services: {
         key: 5555
         value: {

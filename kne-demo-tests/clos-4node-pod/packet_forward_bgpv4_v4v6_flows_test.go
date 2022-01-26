@@ -1,4 +1,4 @@
-// 3 DUT eBGP v4/v6 routes test
+// 4-node Clos POD eBGP v4 routes test
 
 package tests
 

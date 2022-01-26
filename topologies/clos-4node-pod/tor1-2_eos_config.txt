@@ -55,6 +55,7 @@ router bgp 65112
   !
   address-family ipv4
     neighbor ISL activate
+    neighbor 169.254.1.11 activate
   !
 !
 management api http-commands

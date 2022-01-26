@@ -24,6 +24,10 @@ func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	if err := client.SetConfig(config); err != nil {
+		t.Fatal(err)
+	}
+
 	if err := client.StartProtocol(); err != nil {
 		t.Fatal(err)
 	}
@@ -61,7 +65,7 @@ func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnapp
 	d2 := config.Devices().Add().SetName("d2")
 
 	// add flows and common properties
-	for i := 1; i <= 8; i++ {
+	for i := 1; i <= 1; i++ {
 		flow := config.Flows().Add()
 		flow.Metrics().SetEnable(true)
 		flow.Duration().FixedPackets().SetPackets(1000)
@@ -161,7 +165,7 @@ func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnapp
 		SetOrigin(gosnappi.BgpRouteAdvancedOrigin.IGP)
 
 	// add endpoints and packet description flow 1
-	f1 := config.Flows().Items()[1]
+	f1 := config.Flows().Items()[0]
 	f1.SetName(p1.Name() + " -> " + p2.Name() + "-IPv4").
 		TxRx().Device().
 		SetTxNames([]string{d1BgpIpv4Interface1Peer1V4Route1.Name()}).

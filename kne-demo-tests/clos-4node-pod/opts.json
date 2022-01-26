@@ -1,0 +1,18 @@
+{
+    "http_server": "ixia-c-service.clos-4node-pod-ceos.svc.cluster.local:443",
+    "gnmi_server": "gnmi-service.clos-4node-pod-ceos.svc.cluster.local:50051",
+    "grpc_server": "grpc-service.clos-4node-pod-ceos.svc.cluster.local:40051",
+    "ixia_c_ports": [
+        "service-host1.clos-4node-pod-ceos.svc.cluster.local:5555+service-host1.clos-4node-pod-ceos.svc.cluster.local:50071",
+        "service-host2.clos-4node-pod-ceos.svc.cluster.local:5555+service-host2.clos-4node-pod-ceos.svc.cluster.local:50071"
+    ],
+    "dut_ports": [
+      "service-pod1-1.clos-4node-pod-ceos.svc.cluster.local:22",
+      "service-pod1-2.clos-4node-pod-ceos.svc.cluster.local:22",
+      "service-tor1-1.clos-4node-pod-ceos.svc.cluster.local:22",
+      "service-tor1-2.clos-4node-pod-ceos.svc.cluster.local:22"
+    ],
+    "http_transport": false,
+    "debug": false,
+    "clear_screen_on_stats": true
+}

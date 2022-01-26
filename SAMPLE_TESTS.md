@@ -5,7 +5,7 @@
 1. Create Ixia_TG back-2-back topology
 
 ```Shell
-./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-b2b_config.txt
+kne_cli create kne-demo/topologies/kne_ixia-b2b_config.txt
 kubectl get pods -n ixia-c-b2b
 ````
 
@@ -19,7 +19,7 @@ kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/b2b-tests; go tes
 4. Destroy Ixia_TG back-2-back topology once the testing is over
 
 ```Shell
-./kne/kne_cli/kne_cli delete kne-demo/topologies/kne_ixia-b2b_config.txt
+kne_cli delete kne-demo/topologies/kne_ixia-b2b_config.txt
 kubectl get pods -n ixia-c-b2b
 ````
 
@@ -38,7 +38,7 @@ kubectl get pods -n ixia-c-b2b
 2. Create KNE topology with a single DUT and two Ixia_TG nodes
 
 ```Shell
-./kne/kne_cli/kne_cli create kne-demo/topologies/kne_ixia-dut_config.txt
+kne_cli create kne-demo/topologies/kne_ixia-dut_config.txt
 kubectl get pods -n ixia-c-dut
 ````
 
@@ -52,7 +52,7 @@ kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/dut-tests; go tes
 4. Destroy the topology once the testing is over
 
 ```Shell
-./kne/kne_cli/kne_cli delete kne-demo/topologies/kne_ixia-dut_config.txt
+kne_cli delete kne-demo/topologies/kne_ixia-dut_config.txt
 kubectl get pods -n ixia-c-dut
 ````
 
@@ -64,8 +64,8 @@ kubectl get pods -n ixia-c-dut
 
 ```Shell
 cd kne-demo/topologies
-../../kne/kne_cli/kne_cli create kne_ixia3_arista2_config.txt
-kubectl get pods -n ixia-c-2node
+kne_cli create kne_ixia3_arista2_config.txt
+kubectl get pods -n ixia-c
 ````
 
 2. Run test BGP test package with IPv4 and IPv6 routes and traffic flows
@@ -77,8 +77,8 @@ kubectl exec -it gosnappi -- /bin/bash -c 'cd sample-tests/tests; go test -run=T
 6. Destroy the Ixia_TG + Arista topology once the testing is over
 
 ```Shell
-../../kne/kne_cli/kne_cli delete kne_ixia3_arista2_config.txt
-kubectl get pods -n ixia-c-2node
+kne_cli delete kne_ixia3_arista2_config.txt
+kubectl get pods -n ixia-c
 cd ../../../
 ````
 
@@ -90,7 +90,7 @@ cd ../../../
 
 ```Shell
 cd kne-demo/topologies
-../../kne/kne_cli/kne_cli create kne_ixia-c-ceos-3node_config.txt
+kne_cli create kne_ixia-c-ceos-3node_config.txt
 kubectl get pods -n ixia-c-ceos-3node
 cd ../..
 ````
@@ -106,8 +106,59 @@ kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/ceos-3node-tests;
 
 ```Shell
 cd kne-demo/topologies
-../../kne/kne_cli/kne_cli delete kne_ixia-c-ceos-3node_config.txt
+kne_cli delete kne_ixia-c-ceos-3node_config.txt
 kubectl get pods -n ixia-c-ceos-3node
 cd ../..
+````
+
+##  Ixia-c 4-node Clos POD
+
+![Ixia-c 4-node Clos POD Diagram](images/topology_clos-4node-pod.png)
+
+1. Create Ixia_TG + 4-node Clos POD topology
+
+[//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
+
+```Shell
+cd kne-demo/topologies/clos-4node-pod
+kne_cli create kne_clos-4node-pod-ceos.txt
+kubectl get pods -n clos-4node-pod-ceos
+cd ../../..
+````
+
+To inspect BGP status on the devices, use
+
+````
+kubectl exec pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+kubectl exec pod1-2 -c pod1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+kubectl exec tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+````
+
+To inspect IP routes installed from BGP, use
+
+````
+kubectl exec pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+kubectl exec pod1-2 -c pod1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+kubectl exec tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+````
+
+
+2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
+
+```Shell
+kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; go test -run=TestClosPodHostsPacketForwardBgpV4_V4Flows -v"
+kubectl exec -it gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
+````
+
+3. Destroy the Ixia_TG + 4-node Clos POD topology once the testing is over
+
+```Shell
+cd kne-demo/topologies/clos-4node-pod
+kne_cli delete kne_clos-4node-pod-ceos.txt
+kubectl get pods -n ixia-c-ceos-3node
+cd ../../..
 ````
 

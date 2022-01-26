@@ -113,6 +113,8 @@ cd ../..
 
 ##  Ixia-c 4-node Clos POD
 
+![Ixia-c 4-node Clos POD Diagram](images/topology_clos-4node-pod.png)
+
 1. Create Ixia_TG + 4-node Clos POD topology
 
 [//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)

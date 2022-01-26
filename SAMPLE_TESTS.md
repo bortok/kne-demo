@@ -113,7 +113,7 @@ cd ../..
 
 ##  Ixia-c 4-node Clos POD
 
-1. Create Ixia_TG + Arista topology
+1. Create Ixia_TG + 4-node Clos POD topology
 
 [//]: # (TODO This relies on Arista CEOS images being present in gcr.io/kt-nts-athena-dev/ repository and access to it.)
 
@@ -142,12 +142,12 @@ kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; g
 kubectl exec -it gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
 ````
 
-3. Destroy the Ixia_TG + Arista topology once the testing is over
+3. Destroy the Ixia_TG + 4-node Clos POD topology once the testing is over
 
 ```Shell
 cd kne-demo/topologies/clos-4node-pod
 kne_cli delete kne_clos-4node-pod-ceos.txt
 kubectl get pods -n ixia-c-ceos-3node
-cd ../..
+cd ../../..
 ````
 

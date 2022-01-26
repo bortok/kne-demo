@@ -129,10 +129,19 @@ cd ../../..
 To inspect BGP status on the devices, use
 
 ````
-kubectl exec -it pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli
-kubectl exec -it pod1-2 -c pod1-2 -n clos-4node-pod-ceos -- Cli
-kubectl exec -it tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli
-kubectl exec -it tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli
+kubectl exec pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+kubectl exec pod1-2 -c pod1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+kubectl exec tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip bgp summary"
+````
+
+To inspect IP routes installed from BGP, use
+
+````
+kubectl exec pod1-1 -c pod1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+kubectl exec pod1-2 -c pod1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+kubectl exec tor1-1 -c tor1-1 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
+kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route bgp"
 ````
 
 

@@ -33,7 +33,28 @@ func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
 	}
 
 	err = api.WaitFor(
-		func() (bool, error) { return client.AllBgp4SessionUp(config) }, nil,
+		func() (bool, error) {
+			return client.Bgp4MetricsAsExpected(config, []api.BgpMetric{
+				{
+					Name:             "BGPv4 Peer 1",
+					Up:               true,
+					SessionFlaps:     0,
+					RoutesTx:         1,
+					RoutesRx:         10,
+					RouteWithdrawsTx: 0,
+					RouteWithdrawsRx: 0,
+				},
+				{
+					Name:             "BGPv4 Peer 2",
+					Up:               true,
+					SessionFlaps:     0,
+					RoutesTx:         1,
+					RoutesRx:         10,
+					RouteWithdrawsTx: 0,
+					RouteWithdrawsRx: 0,
+				},
+			})
+		}, nil,
 	)
 
 	if err != nil {
@@ -65,7 +86,7 @@ func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnapp
 	d2 := config.Devices().Add().SetName("d2")
 
 	// add flows and common properties
-	for i := 1; i <= 1; i++ {
+	for i := 1; i <= 2; i++ {
 		flow := config.Flows().Add()
 		flow.Metrics().SetEnable(true)
 		flow.Duration().FixedPackets().SetPackets(1000)
@@ -178,6 +199,21 @@ func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnapp
 	f1Ip := f1.Packet().Add().Ipv4()
 	f1Ip.Src().SetValue("10.0.1.101")
 	f1Ip.Dst().SetValue("10.0.1.102")
+
+	// add endpoints and packet description flow 2
+	f2 := config.Flows().Items()[1]
+	f2.SetName(p2.Name() + " -> " + p1.Name() + "-IPv4").
+		TxRx().Device().
+		SetTxNames([]string{d2BgpIpv4Interface1Peer1V4Route1.Name()}).
+		SetRxNames([]string{d1BgpIpv4Interface1Peer1V4Route1.Name()})
+
+	f2Eth := f2.Packet().Add().Ethernet()
+	f2Eth.Src().SetValue(d2Eth1.Mac())
+	f2Eth.Dst().SetValue("00:00:00:00:00:00")
+
+	f2Ip := f2.Packet().Add().Ipv4()
+	f2Ip.Src().SetValue("10.0.1.102")
+	f2Ip.Dst().SetValue("10.0.1.101")
 
 	return config
 }

@@ -173,8 +173,8 @@ watch kubectl get pods
 
 ````
 kubectl cp keysight/athena/sample-tests gosnappi:/go/
-kubectl exec -it gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.7.3"
-kubectl exec -it gosnappi -- /bin/bash -c "apt update && apt-get install libpcap-dev -y"
+kubectl exec gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.7.3"
+kubectl exec gosnappi -- /bin/bash -c "apt update && apt-get install libpcap-dev -y"
 ````
 
 ## [Run sample tests in KNE with Ixia-c](SAMPLE_TESTS.md)

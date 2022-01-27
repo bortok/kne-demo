@@ -1,0 +1,34 @@
+---
+
+pod1-1:
+    hostname: service-pod1-1
+    site: clos-4node-pod-ubuntu
+    groups:
+        - ceos
+    data:
+        role: spine
+
+pod1-2:
+    hostname: service-pod1-2
+    site: clos-4node-pod-ubuntu
+    groups:
+        - ceos
+    data:
+        role: spine
+
+tor1-1:
+    hostname: service-tor1-1
+    site: clos-4node-pod-ubuntu
+    groups:
+        - ceos
+    data:
+        role: leaf
+
+tor1-2:
+    hostname: service-tor1-2
+    site: clos-4node-pod-ubuntu
+    groups:
+        - ceos
+    data:
+        role: leaf
+

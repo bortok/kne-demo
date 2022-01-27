@@ -89,7 +89,7 @@ kubectl get modrule -n kubemod-system
 kubectl describe modrule modrule-ixia-c-add-lldpd -n kubemod-system
 ````
 
-## Create and visualize a topology
+## Create and visualize a 3-node cEOS topology 
 
 These steps could be repeated, including use of a different topology.
 
@@ -99,6 +99,7 @@ These steps could be repeated, including use of a different topology.
 cd $BASE_DIR/kne-demo/topologies/
 kne_cli create kne_ixia-c-ceos-3node_config.txt
 kubectl get pods -n ixia-c-ceos-3node
+kubectl get services -n ixia-c-ceos-3node | grep arista | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
 ````
 
 2. Explore LLDP neighbors from Arista devices
@@ -119,7 +120,6 @@ kubectl exec -it otg1 -c ubuntu-host -n ixia-c-ceos-3node -- /bin/bash
 4. Visualize the emulated topology
 
 ```Shell
-kubectl get services -n ixia-c-ceos-3node | grep arista | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
 cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 ````
 
@@ -159,6 +159,54 @@ cd $BASE_DIR/devnet_marathon_endgame
 rm topology.js diff_topology.js cached_topology.json
 cd $BASE_DIR
 cat /etc/hosts | grep -v "service-arista" | sudo bash -c "cat > /etc/hosts"
+````
+
+## Create and visualize a 4-node Clos POD topology 
+
+These steps could be repeated, including use of a different topology.
+
+1. Create a topology
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/clos-4node-pod
+kne_cli create kne_clos-4node-pod-ubuntu.txt
+kubectl get pods -n clos-4node-pod-ubuntu
+kubectl get services -n clos-4node-pod-ubuntu | grep pod1- | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
+kubectl get services -n clos-4node-pod-ubuntu | grep tor1- | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
+````
+
+2. Explore LLDP neighbors from TOR devices
+
+```Shell
+kubectl exec tor1-1 -n clos-4node-pod-ubuntu -- Cli -c "show lldp neighbors"
+kubectl exec tor1-2 -n clos-4node-pod-ubuntu -- Cli -c "show lldp neighbors"
+````
+
+3. Update inventory files for Nornir
+
+```Shell
+cd $BASE_DIR/devnet_marathon_endgame/inventory
+rm groups.yml hosts_devnet_sb_cml.yml
+ln -s $BASE_DIR/kne-demo/nornir/groups.yml .
+ln -s $BASE_DIR/kne-demo/nornir/nornir_clos-4node-pod-ubuntu_inventory.yml hosts_devnet_sb_cml.yml
+````
+
+4. Visualize the emulated topology
+
+```Shell
+cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
+````
+
+7. Cleanup topology
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/clos-4node-pod
+kne_cli delete kne_clos-4node-pod-ubuntu.txt
+kubectl get pods -n clos-4node-pod-ubuntu
+cd $BASE_DIR/devnet_marathon_endgame
+rm topology.js diff_topology.js cached_topology.json
+cd $BASE_DIR
+cat /etc/hosts | grep -v "service-pod1-" | grep -v "service-tor1-" | sudo bash -c "cat > /etc/hosts"
 ````
 
 ## Cleanup cluster

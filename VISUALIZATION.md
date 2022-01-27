@@ -35,19 +35,9 @@ virtualenv -p python3 nextui
 ```Shell
 cd $BASE_DIR
 source "$BASE_DIR/nextui/bin/activate"
-git clone https://github.com/bortok/devnet_marathon_endgame.git
+git clone https://github.com/netreplica/devnet_marathon_endgame.git
 cd devnet_marathon_endgame
-git checkout eos-dequote-ifnames
 pip3 install -r requirements.txt
-````
-
-3. Inventory. Update file system paths to inventory and group files for Nornir
-
-```Shell
-cd $BASE_DIR/devnet_marathon_endgame/inventory
-rm groups.yml hosts_devnet_sb_cml.yml
-ln -s $BASE_DIR/kne-demo/nornir/groups.yml .
-ln -s $BASE_DIR/kne-demo/nornir/nornir_ixia-c-ceos-3node_inventory.yml hosts_devnet_sb_cml.yml
 ````
 
 ## Initialize automatic sidecar injection for LLDP support. Run these steps only once
@@ -89,7 +79,7 @@ kubectl get modrule -n kubemod-system
 kubectl describe modrule modrule-ixia-c-add-lldpd -n kubemod-system
 ````
 
-## Create and visualize a topology
+## Create and visualize a 3-node cEOS topology 
 
 These steps could be repeated, including use of a different topology.
 
@@ -99,22 +89,15 @@ These steps could be repeated, including use of a different topology.
 cd $BASE_DIR/kne-demo/topologies/
 kne_cli create kne_ixia-c-ceos-3node_config.txt
 kubectl get pods -n ixia-c-ceos-3node
+kubectl get services -n ixia-c-ceos-3node | grep arista | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
 ````
 
 2. Explore LLDP neighbors from Arista devices
 
 ```Shell
-kubectl exec -it arista1 -n ixia-c-ceos-3node -- Cli
-show lldp neighbors
-exit
-
-kubectl exec -it arista2 -n ixia-c-ceos-3node -- Cli
-show lldp neighbors
-exit
-
-kubectl exec -it arista3 -n ixia-c-ceos-3node -- Cli
-show lldp neighbors
-exit
+kubectl exec arista1 -n ixia-c-ceos-3node -- Cli -c "show lldp neighbors"
+kubectl exec arista2 -n ixia-c-ceos-3node -- Cli -c "show lldp neighbors"
+kubectl exec arista3 -n ixia-c-ceos-3node -- Cli -c "show lldp neighbors"
 ````
 
 3. To inspect `ubuntu-host` sidecar, use
@@ -124,16 +107,48 @@ kubectl logs otg1 -c ubuntu-host -n ixia-c-ceos-3node
 kubectl exec -it otg1 -c ubuntu-host -n ixia-c-ceos-3node -- /bin/bash
 ````
 
-4. Visualize the emulated topology
+4. Update file system paths to inventory and group files for Nornir
 
 ```Shell
-kubectl get services -n ixia-c-ceos-3node | grep arista | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
+cd $BASE_DIR/devnet_marathon_endgame/inventory
+rm groups.yml hosts_devnet_sb_cml.yml
+ln -s $BASE_DIR/kne-demo/nornir/groups.yml .
+ln -s $BASE_DIR/kne-demo/nornir/nornir_ixia-c-ceos-3node_inventory.yml hosts_devnet_sb_cml.yml
+````
+
+5. Visualize the emulated topology
+
+```Shell
 cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 ````
 
 Open `main.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view the topology.
 
-5. Cleanup topology
+6. Change the topology by shutting down an interface and re-run visualization
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/
+kne_cli topology push kne_ixia-c-ceos-3node_config.txt arista1 arista1_disable_eth2_config.txt
+sleep 2
+kubectl exec arista1 -n ixia-c-ceos-3node -- Cli -e -c "show interface status"
+cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR/kne-demo/topologies/
+````
+
+Open `diff_page.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view changes in the topology.
+
+7. Restore the topology and re-run visualization
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/
+kne_cli topology push kne_ixia-c-ceos-3node_config.txt arista1 arista1_enable_eth2_config.txt
+sleep 2
+kubectl exec arista1 -n ixia-c-ceos-3node -- Cli -e -c "show interface status"
+cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR/kne-demo/topologies/
+````
+
+Open `diff_page.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view changes in the topology.
+
+8. Cleanup topology
 
 ```Shell
 cd $BASE_DIR/kne-demo/topologies/
@@ -142,7 +157,55 @@ kubectl get pods -n ixia-c-ceos-3node
 cd $BASE_DIR/devnet_marathon_endgame
 rm topology.js diff_topology.js cached_topology.json
 cd $BASE_DIR
-cat /etc/hosts | grep -v "service-arista" | sudo bash -c "cat > /etc/hosts
+cat /etc/hosts | grep -v "service-arista" | sudo bash -c "cat > /etc/hosts"
+````
+
+## Create and visualize a 4-node Clos POD topology 
+
+These steps could be repeated, including use of a different topology.
+
+1. Create a topology
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/clos-4node-pod
+kne_cli create kne_clos-4node-pod-ubuntu.txt
+kubectl get pods -n clos-4node-pod-ubuntu
+kubectl get services -n clos-4node-pod-ubuntu | grep pod1- | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
+kubectl get services -n clos-4node-pod-ubuntu | grep tor1- | awk '{ print $4 "\t" $1 }' | sudo bash -c "cat >> /etc/hosts"
+````
+
+2. Explore LLDP neighbors from TOR devices
+
+```Shell
+kubectl exec tor1-1 -n clos-4node-pod-ubuntu -- Cli -c "show lldp neighbors"
+kubectl exec tor1-2 -n clos-4node-pod-ubuntu -- Cli -c "show lldp neighbors"
+````
+
+3. Update inventory files for Nornir
+
+```Shell
+cd $BASE_DIR/devnet_marathon_endgame/inventory
+rm groups.yml hosts_devnet_sb_cml.yml
+ln -s $BASE_DIR/kne-demo/nornir/groups.yml .
+ln -s $BASE_DIR/kne-demo/nornir/nornir_clos-4node-pod-ubuntu_inventory.yml hosts_devnet_sb_cml.yml
+````
+
+4. Visualize the emulated topology
+
+```Shell
+cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
+````
+
+5. Cleanup topology
+
+```Shell
+cd $BASE_DIR/kne-demo/topologies/clos-4node-pod
+kne_cli delete kne_clos-4node-pod-ubuntu.txt
+kubectl get pods -n clos-4node-pod-ubuntu
+cd $BASE_DIR/devnet_marathon_endgame
+rm topology.js diff_topology.js cached_topology.json
+cd $BASE_DIR
+cat /etc/hosts | grep -v "service-pod1-" | grep -v "service-tor1-" | sudo bash -c "cat > /etc/hosts"
 ````
 
 ## Cleanup cluster

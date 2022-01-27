@@ -1,39 +1,70 @@
 name: "clos-4node-pod-ubuntu"
 nodes: {
     name: "pod1-1"
-    type: HOST
+    type: ARISTA_CEOS
     config: {
-        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
-        command: "/start.sh"
-        args: "-r"
+        config_path: "/mnt/flash"
+        config_file: "startup-config"
+        file: "./pod1-1_eos_config.txt"
+        image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+    }
+    services:{
+        key: 22
+        value: {
+            name: "ssh"
+            inside: 22
+        }
     }
 }
 nodes: {
     name: "pod1-2"
-    type: HOST
+    type: ARISTA_CEOS
     config: {
-        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
-        command: "/start.sh"
-        args: "-r"
+        config_path: "/mnt/flash"
+        config_file: "startup-config"
+        file: "./pod1-2_eos_config.txt"
+        image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+    }
+    services:{
+        key: 22
+        value: {
+            name: "ssh"
+            inside: 22
+        }
     }
 }
-
 nodes: {
     name: "tor1-1"
-    type: HOST
+    type: ARISTA_CEOS
     config: {
-        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
-        command: "/start.sh"
-        args: "-r"
+        config_path: "/mnt/flash"
+        config_file: "startup-config"
+        file: "./tor1-1_eos_config.txt"
+        image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+    }
+    services:{
+        key: 22
+        value: {
+            name: "ssh"
+            inside: 22
+        }
     }
 }
 nodes: {
     name: "tor1-2"
-    type: HOST
+    type: ARISTA_CEOS
     config: {
-        image: "gcr.io/kt-nts-athena-dev/athena/ubuntu-host:latest"
-        command: "/start.sh"
-        args: "-r"
+        config_path: "/mnt/flash"
+        config_file: "startup-config"
+        file: "./tor1-2_eos_config.txt"
+        image: "gcr.io/kt-nts-athena-dev/athena/ceosimage:4.26.0F"
+    }
+    services:{
+        key: 22
+        value: {
+            name: "ssh"
+            inside: 22
+        }
     }
 }
 nodes: {
@@ -58,35 +89,35 @@ links: {
     a_node: "pod1-1"
     a_int: "eth1"
     z_node: "tor1-1"
-    z_int: "eth2"
+    z_int: "eth1"
 }
 links: {
     a_node: "pod1-1"
     a_int: "eth2"
     z_node: "tor1-2"
-    z_int: "eth2"
+    z_int: "eth1"
 }
 links: {
     a_node: "pod1-2"
     a_int: "eth1"
     z_node: "tor1-1"
-    z_int: "eth3"
+    z_int: "eth2"
 }
 links: {
     a_node: "pod1-2"
     a_int: "eth2"
     z_node: "tor1-2"
-    z_int: "eth3"
+    z_int: "eth2"
 }
 links: {
     a_node: "tor1-1"
-    a_int: "eth1"
+    a_int: "eth3"
     z_node: "host1"
     z_int: "eth1"
 }
 links: {
     a_node: "tor1-2"
-    a_int: "eth1"
+    a_int: "eth3"
     z_node: "host2"
     z_int: "eth1"
 }

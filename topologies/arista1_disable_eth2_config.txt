@@ -1,0 +1,5 @@
+!
+interface Ethernet2
+  shutdown
+!
+end

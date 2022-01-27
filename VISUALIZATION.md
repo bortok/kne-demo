@@ -35,9 +35,8 @@ virtualenv -p python3 nextui
 ```Shell
 cd $BASE_DIR
 source "$BASE_DIR/nextui/bin/activate"
-git clone https://github.com/bortok/devnet_marathon_endgame.git
+git clone https://github.com/netreplica/devnet_marathon_endgame.git
 cd devnet_marathon_endgame
-git checkout eos-dequote-ifnames
 pip3 install -r requirements.txt
 ````
 
@@ -197,7 +196,7 @@ ln -s $BASE_DIR/kne-demo/nornir/nornir_clos-4node-pod-ubuntu_inventory.yml hosts
 cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 ````
 
-7. Cleanup topology
+5. Cleanup topology
 
 ```Shell
 cd $BASE_DIR/kne-demo/topologies/clos-4node-pod

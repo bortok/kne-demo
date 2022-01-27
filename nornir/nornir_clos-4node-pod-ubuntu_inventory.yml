@@ -6,7 +6,7 @@ pod1-1:
     groups:
         - ceos
     data:
-        role: router
+        role: pod
 
 pod1-2:
     hostname: service-pod1-2
@@ -14,7 +14,7 @@ pod1-2:
     groups:
         - ceos
     data:
-        role: router
+        role: pod
 
 tor1-1:
     hostname: service-tor1-1
@@ -22,7 +22,7 @@ tor1-1:
     groups:
         - ceos
     data:
-        role: router
+        role: tor
 
 tor1-2:
     hostname: service-tor1-2
@@ -30,5 +30,5 @@ tor1-2:
     groups:
         - ceos
     data:
-        role: router
+        role: tor
 

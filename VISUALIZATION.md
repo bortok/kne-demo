@@ -40,15 +40,6 @@ cd devnet_marathon_endgame
 pip3 install -r requirements.txt
 ````
 
-3. Inventory. Update file system paths to inventory and group files for Nornir
-
-```Shell
-cd $BASE_DIR/devnet_marathon_endgame/inventory
-rm groups.yml hosts_devnet_sb_cml.yml
-ln -s $BASE_DIR/kne-demo/nornir/groups.yml .
-ln -s $BASE_DIR/kne-demo/nornir/nornir_ixia-c-ceos-3node_inventory.yml hosts_devnet_sb_cml.yml
-````
-
 ## Initialize automatic sidecar injection for LLDP support. Run these steps only once
 
 1. If using KIND to run KNE: pull `ubuntu-host` image and load it into KNE cluster
@@ -116,7 +107,16 @@ kubectl logs otg1 -c ubuntu-host -n ixia-c-ceos-3node
 kubectl exec -it otg1 -c ubuntu-host -n ixia-c-ceos-3node -- /bin/bash
 ````
 
-4. Visualize the emulated topology
+4. Update file system paths to inventory and group files for Nornir
+
+```Shell
+cd $BASE_DIR/devnet_marathon_endgame/inventory
+rm groups.yml hosts_devnet_sb_cml.yml
+ln -s $BASE_DIR/kne-demo/nornir/groups.yml .
+ln -s $BASE_DIR/kne-demo/nornir/nornir_ixia-c-ceos-3node_inventory.yml hosts_devnet_sb_cml.yml
+````
+
+5. Visualize the emulated topology
 
 ```Shell
 cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
@@ -124,7 +124,7 @@ cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 
 Open `main.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view the topology.
 
-5. Change the topology by shutting down an interface and re-run visualization
+6. Change the topology by shutting down an interface and re-run visualization
 
 ```Shell
 cd $BASE_DIR/kne-demo/topologies/
@@ -136,7 +136,7 @@ cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 
 Open `diff_page.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view changes in the topology.
 
-6. Restore the topology and re-run visualization
+7. Restore the topology and re-run visualization
 
 ```Shell
 cd $BASE_DIR/kne-demo/topologies/
@@ -148,7 +148,7 @@ cd $BASE_DIR/devnet_marathon_endgame; python3 generate_topology.py; cd $BASE_DIR
 
 Open `diff_page.html` from `$BASE_DIR/devnet_marathon_endgame` in the browser to view changes in the topology.
 
-7. Cleanup topology
+8. Cleanup topology
 
 ```Shell
 cd $BASE_DIR/kne-demo/topologies/

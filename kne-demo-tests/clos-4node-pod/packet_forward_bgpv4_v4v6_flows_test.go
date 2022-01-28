@@ -4,6 +4,7 @@ package tests
 
 import (
 	"keysight/athena/tests/pkg/api"
+	"log"
 	"testing"
 
 	"github.com/open-traffic-generator/snappi/gosnappi"
@@ -72,6 +73,64 @@ func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	// Now shutdown one of the ECMP links and verify traffic still flows
+
+	log.Println("Next is to shutdown TOR links to POD1-1 and check if taffic would still flow...")
+
+	for _, location := range opts.DutPorts() {
+		dut, err := api.NewSshClient(opts, location, "admin")
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer dut.Close()
+
+		if _, err := dut.PushDutConfigFile("./configs/shut_Eth1.txt"); err != nil {
+			t.Fatal(err)
+		}
+		defer dut.PushDutConfigFile("./configs/noshut_Eth1.txt")
+	}
+
+	if err := client.StartTransmit(nil); err != nil {
+		t.Fatal(err)
+	}
+
+	err = api.WaitFor(
+		func() (bool, error) { return client.PortAndFlowMetricsOk(config) }, nil,
+	)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Bring the links up and verify traffic flows
+	log.Println("Next is to bring TOR links to POD1-1 back up and check if taffic would still flow...")
+
+	for _, location := range opts.DutPorts() {
+		dut, err := api.NewSshClient(opts, location, "admin")
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer dut.Close()
+
+		if _, err := dut.PushDutConfigFile("./configs/noshut_Eth1.txt"); err != nil {
+			t.Fatal(err)
+		}
+		defer dut.PushDutConfigFile("./configs/noshut_Eth1.txt")
+	}
+
+	if err := client.StartTransmit(nil); err != nil {
+		t.Fatal(err)
+	}
+
+	err = api.WaitFor(
+		func() (bool, error) { return client.PortAndFlowMetricsOk(config) }, nil,
+	)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
 }
 
 func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnappi.Config {

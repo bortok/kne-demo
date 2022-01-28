@@ -19,10 +19,6 @@ func TestClosPodHosts_RunTraffic(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := client.SetConfig(config); err != nil {
-		t.Fatal(err)
-	}
-
 	if err := client.StartTransmit(nil); err != nil {
 		t.Fatal(err)
 	}

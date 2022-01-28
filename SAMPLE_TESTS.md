@@ -148,9 +148,9 @@ kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route b
 2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
 
 ```Shell
-kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
-kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; bash run.sh"
 kubectl exec gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
+kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; bash test_ecmp_failover.sh"
 ````
 
 3. Destroy the Ixia_TG + 4-node Clos POD topology once the testing is over

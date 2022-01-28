@@ -1,0 +1,8 @@
+!
+router bgp 65111
+  redistribute connected
+!
+no route-map ACCEPT_DC_LOCAL
+!
+no ip prefix-list DC_LOCAL_SUBNET
+!

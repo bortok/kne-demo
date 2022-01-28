@@ -1,0 +1,13 @@
+!
+no route-map ACCEPT_DC_LOCAL
+!
+no ip prefix-list DC_LOCAL_SUBNET
+!
+ip prefix-list DC_LOCAL_SUBNET seq 10 permit 10.0.211.0/24 le 32
+!
+route-map ACCEPT_DC_LOCAL permit 10
+  match ip address access-list DC_LOCAL_SUBNET
+!
+router bgp 65112
+  redistribute connected route-map ACCEPT_DC_LOCAL
+!

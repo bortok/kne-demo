@@ -149,7 +149,7 @@ kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route b
 
 ```Shell
 kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
-kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; go test -run=TestClosPodHostsPacketForwardBgpV4_V4Flows -v"
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; bash run.sh"
 kubectl exec gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
 ````
 

@@ -1,0 +1,10 @@
+!
+router bgp 65511
+  no neighbor ISL route-map ACCEPT_ISL_PREFIXES in
+!
+no route-map ACCEPT_ISL_PREFIXES
+!
+no ip prefix-list CLOS_LOOPBACKS
+no ip prefix-list CLOS_LINKS
+no ip prefix-list HOST_VIPS
+!

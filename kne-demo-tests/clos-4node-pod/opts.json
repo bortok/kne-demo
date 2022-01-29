@@ -7,6 +7,8 @@
         "service-host2.clos-4node-pod-ceos.svc.cluster.local:5555+service-host2.clos-4node-pod-ceos.svc.cluster.local:50071"
     ],
     "dut_ports": [
+      "service-pod1-1.clos-4node-pod-ceos.svc.cluster.local:22",
+      "service-pod1-2.clos-4node-pod-ceos.svc.cluster.local:22",
       "service-tor1-1.clos-4node-pod-ceos.svc.cluster.local:22",
       "service-tor1-2.clos-4node-pod-ceos.svc.cluster.local:22"
     ],

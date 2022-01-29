@@ -1,0 +1,4 @@
+!
+ip prefix-list HOST_VIPS seq 20 permit 10.0.1.0/24 eq 32
+no ip prefix-list HOST_VIPS seq 10
+!

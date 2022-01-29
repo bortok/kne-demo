@@ -30,7 +30,7 @@ func ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client *api.ApiClient) gosnapp
 		flow := config.Flows().Add()
 		flow.Metrics().SetEnable(true)
 		flow.Duration().FixedPackets().SetPackets(1000)
-		flow.Rate().SetPps(500)
+		flow.Rate().SetPps(250)
 	}
 
 	// add protocol stacks for device d1

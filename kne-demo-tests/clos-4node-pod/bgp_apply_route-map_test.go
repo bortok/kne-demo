@@ -15,16 +15,11 @@ func TestClosPodHosts_ApplyRouteMap(t *testing.T) {
 		}
 		defer dut.Close()
 
-		if i == 0 {
-			if _, err := dut.PushDutConfigFile("./configs/apply_route-map_tor1-1.txt"); err != nil {
+		// Apply to POD switches only (index 0 and 2)
+		if i == 0 || i == 1 {
+			if _, err := dut.PushDutConfigFile("./configs/apply_route-map_pod.txt"); err != nil {
 				t.Fatal(err)
 			}
-		} else if i == 1 {
-			if _, err := dut.PushDutConfigFile("./configs/apply_route-map_tor1-2.txt"); err != nil {
-				t.Fatal(err)
-			}
-		} else {
-			break
 		}
 	}
 }
@@ -37,16 +32,28 @@ func TestClosPodHosts_RemoveRouteMap(t *testing.T) {
 		}
 		defer dut.Close()
 
-		if i == 0 {
-			if _, err := dut.PushDutConfigFile("./configs/remove_route-map_tor1-1.txt"); err != nil {
+		// Apply to POD switches only (index 0 and 2)
+		if i == 0 || i == 1 {
+			if _, err := dut.PushDutConfigFile("./configs/remove_route-map_pod.txt"); err != nil {
 				t.Fatal(err)
 			}
-		} else if i == 1 {
-			if _, err := dut.PushDutConfigFile("./configs/remove_route-map_tor1-2.txt"); err != nil {
+		}
+	}
+}
+
+func TestClosPodHosts_FixRouteMap(t *testing.T) {
+	for i, location := range opts.DutPorts() {
+		dut, err := api.NewSshClient(opts, location, "admin")
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer dut.Close()
+
+		// Apply to POD switches only (index 0 and 2)
+		if i == 0 || i == 1 {
+			if _, err := dut.PushDutConfigFile("./configs/apply_route-map_pod_fix.txt"); err != nil {
 				t.Fatal(err)
 			}
-		} else {
-			break
 		}
 	}
 }

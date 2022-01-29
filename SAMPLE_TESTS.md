@@ -166,7 +166,7 @@ kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; b
 ```Shell
 cd kne-demo/topologies/clos-4node-pod
 kne_cli delete kne_clos-4node-pod-ceos.txt
-kubectl get pods -n ixia-c-ceos-3node
+kubectl get pods -n clos-4node-pod-ceos
 cd ../../..
 ````
 

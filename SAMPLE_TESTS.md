@@ -145,12 +145,20 @@ kubectl exec tor1-2 -c tor1-2 -n clos-4node-pod-ceos -- Cli -e -c "sh ip route b
 ````
 
 
-2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows
+2. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows, with ECMP failover
 
 ```Shell
+kubectl exec gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
 kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
-kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; go test -run=TestClosPodHostsPacketForwardBgpV4_V4Flows -v"
-kubectl exec -it gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; bash test_ecmp_failover.sh"
+````
+
+3. Copy and run a test package. This package would execute BGP test package with IPv4 and IPv6 routes and traffic flows, with BGP route-maps
+
+```Shell
+kubectl exec gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
+kubectl cp kne-demo/kne-demo-tests/clos-4node-pod gosnappi:/go/sample-tests/
+kubectl exec -it gosnappi -- /bin/bash -c "cd /go/sample-tests/clos-4node-pod; bash test_bgp_route-map.sh"
 ````
 
 3. Destroy the Ixia_TG + 4-node Clos POD topology once the testing is over
@@ -158,7 +166,7 @@ kubectl exec -it gosnappi -- rm -rf /go/sample-tests/clos-4node-pod
 ```Shell
 cd kne-demo/topologies/clos-4node-pod
 kne_cli delete kne_clos-4node-pod-ceos.txt
-kubectl get pods -n ixia-c-ceos-3node
+kubectl get pods -n clos-4node-pod-ceos
 cd ../../..
 ````
 

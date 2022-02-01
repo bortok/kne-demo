@@ -1,0 +1,27 @@
+!
+no route-map ACCEPT_ISL_PREFIXES
+!
+no ip prefix-list CLOS_LOOPBACKS
+no ip prefix-list CLOS_LINKS
+!
+ip prefix-list CLOS_LOOPBACKS seq 10 permit 10.0.211.0/24 eq 32
+!
+ip prefix-list CLOS_LINKS seq 10 permit 192.168.0.0/16 eq 31
+!
+ip prefix-list HOST_VIPS seq 10 permit 10.0.0.0/24 eq 32
+!
+route-map ACCEPT_ISL_PREFIXES permit 10
+  match ip address prefix-list CLOS_LOOPBACKS
+  exit
+!
+route-map ACCEPT_ISL_PREFIXES permit 20
+  match ip address prefix-list CLOS_LINKS
+  exit
+!
+route-map ACCEPT_ISL_PREFIXES permit 30
+  match ip address prefix-list HOST_VIPS
+  exit
+!
+router bgp 65511
+  neighbor ISL route-map ACCEPT_ISL_PREFIXES in
+!

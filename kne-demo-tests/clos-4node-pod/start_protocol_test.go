@@ -7,14 +7,11 @@ import (
 	"testing"
 )
 
-func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
+func TestClosPodHosts_StartProtocol(t *testing.T) {
 	client, err := api.NewClient(opts)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	defer client.Close()
-	defer client.StopProtocol()
 
 	config := ClosPodHostsPacketForwardBgpV4_V4FlowsConfig(client)
 
@@ -38,7 +35,7 @@ func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
 					Up:               true,
 					SessionFlaps:     0,
 					RoutesTx:         1,
-					RoutesRx:         -1,
+					RoutesRx:         10,
 					RouteWithdrawsTx: 0,
 					RouteWithdrawsRx: 0,
 				},
@@ -47,7 +44,7 @@ func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
 					Up:               true,
 					SessionFlaps:     0,
 					RoutesTx:         1,
-					RoutesRx:         -1,
+					RoutesRx:         10,
 					RouteWithdrawsTx: 0,
 					RouteWithdrawsRx: 0,
 				},
@@ -58,17 +55,4 @@ func TestClosPodHostsPacketForwardBgpV4_V4Flows(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	if err := client.StartTransmit(nil); err != nil {
-		t.Fatal(err)
-	}
-
-	err = api.WaitFor(
-		func() (bool, error) { return client.PortAndFlowMetricsOk(config) }, nil,
-	)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
 }

@@ -1,14 +1,17 @@
 {
-    "http_server": "ixia-c-service.ixia-c-b2b.svc.cluster.local:443",
-    "gnmi_server": "gnmi-service.ixia-c-b2b.svc.cluster.local:50051",
-    "grpc_server": "grpc-service.ixia-c-b2b.svc.cluster.local:40051",
+    "http_server": "https://service-https-otg-controller.ixia-c-b2b.svc.cluster.local:443",
+    "gnmi_server": "service-gnmi-otg-controller.ixia-c-b2b.svc.cluster.local:50051",
+    "grpc_server": "service-grpc-otg-controller.ixia-c-b2b.svc.cluster.local:40051",
     "ixia_c_ports": [
-        "service-ate1.ixia-c-b2b.svc.cluster.local:5555+service-ate1.ixia-c-b2b.svc.cluster.local:50071",
-        "service-ate2.ixia-c-b2b.svc.cluster.local:5555+service-ate2.ixia-c-b2b.svc.cluster.local:50071"
+      "eth1",
+      "eth2"
     ],
     "dut_ports": [
     ],
     "http_transport": false,
     "debug": false,
-    "clear_screen_on_stats": true
+    "clear_screen_on_stats": true,
+    "test_iterations": 100,
+    "stat_fetch_using_gnmi": true,
+    "use_local_kubeconfig": false
 }

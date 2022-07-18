@@ -26,7 +26,7 @@ func TestDUTEbgpv4RoutesGosnappi(t *testing.T) {
 	}
 
 	log.Println("Logging into DUT ...")
-	dut, err := api.NewSshClient(opts, opts.DutPorts()[0], "admin")
+	dut, err := api.NewSshClient(opts, opts.DutPorts()[0], "admin", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -69,8 +69,8 @@ func TestDUTEbgpv4RoutesGosnappi(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer gnmiClient.Close()
 
-	// TBD: gNMI broken for bgpv4_metrics [Unknown Subscription]
 	err = api.WaitFor(
 		func() (bool, error) { return gnmiClient.AllBgp4SessionUp(config) }, nil,
 	)

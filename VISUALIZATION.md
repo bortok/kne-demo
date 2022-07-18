@@ -1,4 +1,4 @@
-# KNE Live Network Tolopogy Visualization with Ixia-c nodes
+# KNE Live Network Topology Visualization with Ixia-c nodes
 
 ## Overview
 

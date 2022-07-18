@@ -31,6 +31,7 @@ gcloud init
 gcloud iam service-accounts create athena-g@kt-nas-demo.iam.gserviceaccount.com
 gcloud projects add-iam-policy-binding kt-nas-demo --member="serviceAccount:athena-g@kt-nas-demo.iam.gserviceaccount.com" --role="roles/owner"
 gcloud iam service-accounts keys create athena-g.json --iam-account=athena-g@kt-nas-demo.iam.gserviceaccount.com
+gcloud auth activate-service-account athena-g@kt-nas-demo.iam.gserviceaccount.com --key-file=athena-g.json
 ````
 
 [//]: # (TODO proper location for athena-g.json file)
@@ -173,7 +174,7 @@ watch kubectl get pods
 
 ````
 kubectl cp keysight/athena/sample-tests gosnappi:/go/
-kubectl exec gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.7.3"
+kubectl exec gosnappi -- /bin/bash -c "go get github.com/open-traffic-generator/snappi/gosnappi@v0.7.18"
 kubectl exec gosnappi -- /bin/bash -c "apt update && apt-get install libpcap-dev -y"
 ````
 
